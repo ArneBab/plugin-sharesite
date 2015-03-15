@@ -1,7 +1,7 @@
-package plugins.ShareLink;
+package plugins.ShareWiki;
 
-import plugins.ShareLink.common.Logger;
-import plugins.ShareLink.webui.WebInterface;
+import plugins.ShareWiki.common.Logger;
+import plugins.ShareWiki.webui.WebInterface;
 import freenet.l10n.BaseL10n;
 import freenet.l10n.PluginL10n;
 import freenet.l10n.BaseL10n.LANGUAGE;
@@ -43,8 +43,8 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 	public void runPlugin(PluginRespirator pr) {
 		pluginRespirator = pr;
 		
-		logger = new Logger("ShareLink.log");
-		logger.putstr("Loading of ShareLink " + version + " begins!");
+		logger = new Logger("ShareWiki.log");
+		logger.putstr("Loading of ShareWiki " + version + " begins!");
 		
 		logger.putstr("Preparing the inserter ...");
 		inserter = new Inserter();
@@ -91,7 +91,7 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 
 	@Override
 	public String getL10nFilesBasePath() {
-		return "plugins/ShareLink/l10n/";
+		return "plugins/ShareWiki/l10n/";
 	}
 
 	@Override
@@ -101,7 +101,7 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 
 	@Override
 	public String getL10nOverrideFilesMask() {
-		return "ShareLink_lang_${lang}.override.l10n";
+		return "ShareWiki_lang_${lang}.override.l10n";
 	}
 
 	@Override

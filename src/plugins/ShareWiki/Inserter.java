@@ -1,4 +1,4 @@
-package plugins.ShareLink;
+package plugins.ShareWiki;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -10,7 +10,7 @@ import freenet.support.io.ArrayBucket;
 
 /**
  * Inserts new or the first editions of freesites.
- * The ShareLink freesites is inserted as
+ * The ShareWiki freesites is inserted as
  * normal freesites, and can be accessed as such.
  */
 public class Inserter extends Thread {

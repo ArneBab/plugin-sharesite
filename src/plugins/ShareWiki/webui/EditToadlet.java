@@ -1,10 +1,10 @@
-package plugins.ShareLink.webui;
+package plugins.ShareWiki.webui;
 
 import java.io.IOException;
 import java.net.URI;
 
-import plugins.ShareLink.Freesite;
-import plugins.ShareLink.Plugin;
+import plugins.ShareWiki.Freesite;
+import plugins.ShareWiki.Plugin;
 import freenet.clients.http.InfoboxNode;
 import freenet.clients.http.PageMaker;
 import freenet.clients.http.PageNode;
@@ -31,7 +31,7 @@ public class EditToadlet extends Toadlet {
 
 	@Override
 	public String path() {
-		return "/ShareLink/Edit/";
+		return "/ShareWiki/Edit/";
 	}
 
 	// Gets called by the freenet node
@@ -48,42 +48,42 @@ public class EditToadlet extends Toadlet {
 		}
 		Freesite c = Plugin.instance.database.getFreesiteWithUniqueKey(siteId);
 		if (c == null) {
-			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareLink/");
+			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/");
 			return;
 		}
 		
 		// Prepare
 		PageNode pageNode = pageMaker.getPageNode(
-			l10n.getString("ShareLink.Menu.Name"), ctx);
+			l10n.getString("ShareWiki.Menu.Name"), ctx);
 		HTMLNode editForm = pr.addFormChild(pageNode.content,
-			"/ShareLink/Edit/" + siteId, "editForm");
+			"/ShareWiki/Edit/" + siteId, "editForm");
 		
 		InfoboxNode editBox = pageMaker.getInfobox(
-			l10n.getString("ShareLink.Edit.Header"));
+			l10n.getString("ShareWiki.Edit.Header"));
 		editForm.addChild(editBox.outer);
 		
 		// Menu link
 		HTMLNode quickLinks = editBox.content.addChild("p");
-		quickLinks.addChild("a", "href", "/ShareLink/",
-			l10n.getString("ShareLink.Edit.MenuLink"));
+		quickLinks.addChild("a", "href", "/ShareWiki/",
+			l10n.getString("ShareWiki.Edit.MenuLink"));
 
 		// Buttons above
 		HTMLNode topBtnDiv = editBox.content.addChild("p");
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "submit", "saveBtn",
-			l10n.getString("ShareLink.Edit.SaveBtn") };
+			l10n.getString("ShareWiki.Edit.SaveBtn") };
 		topBtnDiv.addChild("input", attrs, vals);
 
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "submit", "previewBtn",
-			l10n.getString("ShareLink.Edit.PreviewBtn") };
+			l10n.getString("ShareWiki.Edit.PreviewBtn") };
 		topBtnDiv.addChild("input", attrs, vals);
 		
 		// Edit boxes
 		HTMLNode nameDiv = editBox.content.addChild("p");
 		HTMLNode nameSpan = nameDiv.addChild("span");
 		nameSpan.addChild("span",
-			l10n.getString("ShareLink.Edit.Name"));
+			l10n.getString("ShareWiki.Edit.Name"));
 		nameSpan.addChild("br");
 		attrs = new String[] { "type", "size", "name", "value" };
 		vals = new String[] { "text", "80", "nameInput", c.getName() };
@@ -92,7 +92,7 @@ public class EditToadlet extends Toadlet {
 		HTMLNode descDiv = editBox.content.addChild("p");
 		HTMLNode descSpan = descDiv.addChild("span");
 		descSpan.addChild("span",
-			l10n.getString("ShareLink.Edit.Description"));
+			l10n.getString("ShareWiki.Edit.Description"));
 		descSpan.addChild("br");
 		attrs = new String[] { "name", "rows", "cols", "style" };
 		vals = new String[] { "descInput", "3", "80", "font-size: medium;" };
@@ -101,7 +101,7 @@ public class EditToadlet extends Toadlet {
 		HTMLNode textDiv = editBox.content.addChild("p");
 		HTMLNode textSpan = textDiv.addChild("span");
 		textSpan.addChild("span",
-			l10n.getString("ShareLink.Edit.Text"));
+			l10n.getString("ShareWiki.Edit.Text"));
 		textSpan.addChild("br");
 		attrs = new String[] { "name", "rows", "cols", "style" };
 		vals = new String[] { "textInput", "20", "80", "font-size: medium;" };
@@ -111,26 +111,26 @@ public class EditToadlet extends Toadlet {
 		HTMLNode bottomBtnDiv = editBox.content.addChild("p");
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "submit", "saveBtn",
-			l10n.getString("ShareLink.Edit.SaveBtn") };
+			l10n.getString("ShareWiki.Edit.SaveBtn") };
 		bottomBtnDiv.addChild("input", attrs, vals);
 
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "submit", "previewBtn",
-			l10n.getString("ShareLink.Edit.PreviewBtn") };
+			l10n.getString("ShareWiki.Edit.PreviewBtn") };
 		bottomBtnDiv.addChild("input", attrs, vals);
 		
 		// Syntax
 		editBox.content.addChild("p",
-			l10n.getString("ShareLink.Edit.TextSyntax"));
+			l10n.getString("ShareWiki.Edit.TextSyntax"));
 		
 		// Insert Key
 		InfoboxNode advBox = pageMaker.getInfobox(
-			l10n.getString("ShareLink.Edit.Advanced"));
+			l10n.getString("ShareWiki.Edit.Advanced"));
 		editForm.addChild(advBox.outer);
 		
 		HTMLNode backup = advBox.content.addChild("p");
 		backup.addChild("span",
-			l10n.getString("ShareLink.Edit.InsertKey"));
+			l10n.getString("ShareWiki.Edit.InsertKey"));
 		backup.addChild("br");
 		backup.addChild("span", c.getInsertSSK());
 
@@ -150,7 +150,7 @@ public class EditToadlet extends Toadlet {
 		}
 		Freesite c = Plugin.instance.database.getFreesiteWithUniqueKey(siteId);
 		if (c == null) {
-			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareLink/Error/");
+			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/Error/");
 			return;
 		}
 		
@@ -183,9 +183,9 @@ public class EditToadlet extends Toadlet {
 		}
 		
 		if (req.isPartSet("previewBtn")) {
-			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareLink/Preview/" + siteId + "/index.html");
+			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/Preview/" + siteId + "/index.html");
 		}
 		
-		writeTemporaryRedirect(ctx, "Redirecting...", "/ShareLink/Edit/" + siteId);
+		writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/Edit/" + siteId);
 	}
 }

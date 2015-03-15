@@ -1,10 +1,10 @@
-package plugins.ShareLink.common;
+package plugins.ShareWiki.common;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import plugins.ShareLink.Plugin;
+import plugins.ShareWiki.Plugin;
 
 /**
  * This logger logs data to a specific file for debugging purpose.
