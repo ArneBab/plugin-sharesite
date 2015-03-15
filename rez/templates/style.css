@@ -1,0 +1,42 @@
+body {
+	background: #ffffff;
+	font-size: 0.9em;
+	font-family: sans-serif;
+}
+
+.normalline {
+}
+
+.textlinkbox {
+}
+
+.textlink {
+}
+
+.preview {
+	max-width:800px;
+	
+}
+
+.from {
+  background: #e0e0e0;
+  font-weight:bold;
+}
+
+.imglinkbox {
+	background: #ddd;
+}
+
+.imglink {
+	display: inline-block;
+	width: 170px;
+	text-align: center;
+	vertical-align: top;
+}
+
+.imglink img {
+	max-width: 150px;
+	max-height: 150px;
+	border: 1px solid #444444;
+	margin: 7px;
+}
