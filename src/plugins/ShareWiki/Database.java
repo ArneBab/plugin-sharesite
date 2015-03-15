@@ -1,11 +1,11 @@
-package plugins.ShareLink;
+package plugins.ShareWiki;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 
-import plugins.ShareLink.common.FileStorage;
-import plugins.ShareLink.common.SmartMap;
+import plugins.ShareWiki.common.FileStorage;
+import plugins.ShareWiki.common.SmartMap;
 
 /**
  * The database knows both the configuration and which
@@ -25,7 +25,7 @@ public class Database {
 		nextUniqueKey = 0;
 		lastDeletedTime = 0;
 		
-		addFromMap(FileStorage.load("ShareLink.db"));
+		addFromMap(FileStorage.load("ShareWiki.db"));
 	}
 	
 	public synchronized int numFreesites() {
@@ -77,7 +77,7 @@ public class Database {
 		
 		// Store the database, replacing the old file
 		try {
-			FileStorage.save("ShareLink.db", getDatabaseAsMap());
+			FileStorage.save("ShareWiki.db", getDatabaseAsMap());
 		} catch (IOException e) {
 			// TODO: maybe tell the user?
 		}

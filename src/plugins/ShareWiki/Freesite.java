@@ -1,4 +1,4 @@
-package plugins.ShareLink;
+package plugins.ShareWiki;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 
-import plugins.ShareLink.common.SmartMap;
+import plugins.ShareWiki.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
 
@@ -38,7 +38,7 @@ public class Freesite implements Comparable<Freesite> {
 	public Freesite(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 		
-		name = "ShareLink freesite";
+		name = "ShareWiki freesite";
 		description = "Write a short description shown in search results here.";
 		text = "";
 		
@@ -114,7 +114,7 @@ public class Freesite implements Comparable<Freesite> {
 		String insertDate = dateFormat.format(calendar.getTime());
 		
 		// Pass through the HTML file, substituting in the real content
-		String template = "/plugins/ShareLink/html/index.html";
+		String template = "/plugins/ShareWiki/html/index.html";
 		
 		InputStream is = Plugin.class.getClassLoader().getResourceAsStream(template);
 		if (is == null) throw new Exception("Couldn't load \"" + template + "\"");
@@ -141,7 +141,7 @@ public class Freesite implements Comparable<Freesite> {
 	}
 	
 	public synchronized String getCSS() throws Exception {
-		String template = "/plugins/ShareLink/html/style.css";
+		String template = "/plugins/ShareWiki/html/style.css";
 		
 		InputStream is = Plugin.class.getClassLoader().getResourceAsStream(template);
 		if (is == null) throw new Exception("Couldn't load \"" + template + "\"");
@@ -160,7 +160,7 @@ public class Freesite implements Comparable<Freesite> {
 	}
 	
 	public synchronized String getStatus() {
-		return Plugin.instance.l10n.getString("ShareLink." + l10nStatus);
+		return Plugin.instance.l10n.getString("ShareWiki." + l10nStatus);
 	}
 
 	public synchronized String getRealStatus() {
