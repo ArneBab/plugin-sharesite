@@ -13,50 +13,55 @@ import freenet.pluginmanager.FredPluginThreadless;
 import freenet.pluginmanager.FredPluginVersioned;
 import freenet.pluginmanager.PluginRespirator;
 
+import java.awt.GraphicsEnvironment;
+
 /**
  * This is the main class, the first one executed by Freenet.
  * Only one instance exists, and can be accessed from anywhere using
  * the global variable. The most logical way to reach different things.
  */
 public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVersioned, FredPluginL10n, FredPluginBaseL10n, FredPluginThreadless {
-	public static final String version = "0.1.5";
-	public static final long realVersion = 6;
+	public static final String version = "0.2.0";
+	public static final long realVersion = 1;
 	public static final String freesite = "USK@9aOIc6GxaELlIj8550zM7uaOXgPhqk5ZQS0fzJzrJ78,bhzvffR2i36fTnHzHJFKGVwFLEeSYoRI4DiSBmqb-9E,AQACAAE/site/10/";
 	public static boolean isPreRelease = false;
-	
+
 	private PluginL10n plugL10n;
-	
+
 	public static Plugin instance;
 	public PluginRespirator pluginRespirator;
 	public BaseL10n l10n;
-	
+
 	public Logger logger;
 	public Inserter inserter;
 	public Database database;
 	public WebInterface webInterface;
-	
+
 	public Plugin() {
 		instance = this;
 	}
-	
+
 	@Override
 	public void runPlugin(PluginRespirator pr) {
 		pluginRespirator = pr;
-		
+
 		logger = new Logger("ShareWiki.log");
 		logger.putstr("Loading of ShareWiki " + version + " begins!");
-		
+
+		logger.putstr("Setting GraphicsEnvironment to headless");
+		System.setProperty("java.awt.headless","true");
+
 		logger.putstr("Preparing the inserter ...");
 		inserter = new Inserter();
 		inserter.start();
-		
+
 		logger.putstr("Loading the database ...");
 		database = new Database();
 
 		logger.putstr("Registering the web interface ...");
 		webInterface = new WebInterface();
 		webInterface.createInterface();
-		
+
 		logger.putstr("Successfully started!");
 	}
 
