@@ -6,16 +6,22 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+
+import plugins.ShareWiki.mylyn.wikitext.core.parser.MarkupParser;
+import plugins.ShareWiki.mylyn.wikitext.textile.core.TextileLanguage;
+import plugins.ShareWiki.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
 import plugins.ShareWiki.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
+import java.io.*;
 
 /**
  * This is the freesite. Besides containing the actual configuration
  * and content, the freesite know which inserted edition we are on
  * and can generate all data that we need for inserting it.
- * 
+ *
  * This class implements Comparable. The natural order for
  * this class is sorted by uniqueKey, that is the first
  * created is first, and most recent created last.
@@ -25,140 +31,202 @@ public class Freesite implements Comparable<Freesite> {
 	private String name;
 	private String description;
 	private String text;
-	
+	private String css;
+
 	private String requestSSK;
 	private String insertSSK;
 	private long edition;
 
 	private String l10nStatus;
 	private String l10nStatusChangeToOnRestart;
-	
+
 	private int uniqueKey;
-	
+
 	public Freesite(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
-		
+
 		name = "ShareWiki freesite";
 		description = "Write a short description shown in search results here.";
 		text = "";
-		
+
+		String csstemplate = "/templates/style.css";
+
+		try {
+			InputStream is = Plugin.class.getClassLoader().getResourceAsStream(csstemplate);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			StringBuilder sb = new StringBuilder();
+
+			while (true) {
+				String line = reader.readLine();
+				if (line == null) break;
+				sb.append(line + "\n");
+			}
+
+			reader.close();
+			this.css= sb.toString();
+		} catch (Exception e) {
+			this.css= "";
+		}
+
+
+
 		HighLevelSimpleClient simpleClient = Plugin.instance.pluginRespirator.getHLSimpleClient();
 		FreenetURI[] keys = simpleClient.generateKeyPair("");
 		requestSSK = keys[1].toString();
 		insertSSK = keys[0].toString();
 		edition = -1;  // first inserted edition is 0
-		
+
 		l10nStatus = "Status.New";
 		l10nStatusChangeToOnRestart = "Status.New";
 	}
-	
+
 	public synchronized String getName() {
 		return name;
 	}
-	
+
 	public synchronized void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public synchronized String getDescription() {
 		return description;
 	}
-	
+
 	public synchronized void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public synchronized String getText() {
 		return text;
 	}
-	
+
 	public synchronized void setText(String text) {
 		this.text = text;
 	}
-	
+
 	public int getUniqueKey() {
 		return uniqueKey;
 	}
-	
+
+	public synchronized void setInsertSSK(String key) {
+		this.insertSSK=key;
+	}
+
+	public synchronized void setRequestSSK(String key) {
+		this.requestSSK=key;
+	}
+
 	public synchronized String getRequestSSK() {
 		return requestSSK;
 	}
-	
+
 	public synchronized String getInsertSSK() {
 		return insertSSK;
 	}
-	
+
 	public synchronized long getEdition() {
 		return edition;
 	}
-	
+
 	public synchronized void setEdition(long edition) {
 		this.edition = edition;
 	}
-	
+
+	/*
+	 *  Try to find all Freenet keys in the freesite source
+	 */
+	public synchronized String getKeys() {
+		BufferedReader br=new BufferedReader(new StringReader(text));
+		StringBuffer buf=new StringBuffer();
+
+		try {
+			String line="";
+			while((line=br.readLine())!= null) {
+				Pattern key= Pattern.compile("(?<=/)((SSK|USK|CHK)@.*)");
+
+				Matcher sm=key.matcher(line);
+				if(sm.find()) {
+					String str=sm.group();
+
+					// remove the rest of the wiki markup
+					str=str.replaceAll("jpg!","jpg");
+					str=str.replaceAll("JPG!","JPG");
+					str=str.replaceAll("jpeg!","jpeg");
+					str=str.replaceAll("JPEG!","JPEG");
+					str=str.replaceAll("gif!","gif");
+					str=str.replaceAll("GIF!","GIF");
+					str=str.replaceAll("png!","png");
+					str=str.replaceAll("PNG!","PNG");
+
+					str=str.replaceAll("%20"," ");
+
+					buf.append(str+"\r\n");
+				}
+
+
+			}
+		} catch (IOException e) {
+			Plugin.instance.logger.putstr(e.getMessage());
+		}
+
+		return buf.toString();
+	}
+
 	public synchronized String getHTML() throws Exception {
 		// Prepare content
+		//Plugin.instance.logger.putstr("textToHTML:\n=============");
 		String content = textToHTML(text);
-		
+		//Plugin.instance.logger.putstr("==============");
+
 		// Generate URIs we need
-		FreenetURI requestURI = new FreenetURI(requestSSK + "site-" + (edition + 1) + "/");
+		FreenetURI requestURI = new FreenetURI(requestSSK + name +"-" + (edition + 1) + "/");
 		FreenetURI uskURI = requestURI.uskForSSK();
 		String nextEdition = uskURI.toString();
-		
+
 		long updateEdition = (edition >= 0) ? -(edition + 1) : -1;
 		String checkUpdates = uskURI.setSuggestedEdition(updateEdition).toString();
-		
+
 		// We need todays date too
 		Calendar calendar = Calendar.getInstance(java.util.TimeZone.getTimeZone("UTC"));
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String insertDate = dateFormat.format(calendar.getTime());
-		
+
 		// Pass through the HTML file, substituting in the real content
-		String template = "/plugins/ShareWiki/html/index.html";
-		
+		String template = "/templates/index.html";
+
 		InputStream is = Plugin.class.getClassLoader().getResourceAsStream(template);
 		if (is == null) throw new Exception("Couldn't load \"" + template + "\"");
 		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		
+
 		StringBuilder sb = new StringBuilder();
-		
+
 		while (true) {
 			String line = reader.readLine();
 			if (line == null) break;
-			
+
 			line = line.replaceAll("\\$NAME\\$", Matcher.quoteReplacement(name));
 			line = line.replaceAll("\\$DESCRIPTION\\$", Matcher.quoteReplacement(description));
 			line = line.replaceAll("\\$CONTENT\\$", Matcher.quoteReplacement(content));
 			line = line.replaceAll("\\$INSERT_URI\\$", Matcher.quoteReplacement(nextEdition));
 			line = line.replaceAll("\\$CHECK_UPDATES_URI\\$", Matcher.quoteReplacement(checkUpdates));
 			line = line.replaceAll("\\$INSERT_DATE\\$", Matcher.quoteReplacement(insertDate));
-			
+
 			sb.append(line + "\n");
 		}
-		
+
 		reader.close();
 		return sb.toString();
 	}
-	
-	public synchronized String getCSS() throws Exception {
-		String template = "/plugins/ShareWiki/html/style.css";
-		
-		InputStream is = Plugin.class.getClassLoader().getResourceAsStream(template);
-		if (is == null) throw new Exception("Couldn't load \"" + template + "\"");
-		BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-		
-		StringBuilder sb = new StringBuilder();
-		
-		while (true) {
-			String line = reader.readLine();
-			if (line == null) break;
-			sb.append(line + "\n");
-		}
-		
-		reader.close();
-		return sb.toString();
+
+	public synchronized void setCSS(String css)  {
+		this.css=css;
 	}
-	
+
+	public synchronized String getCSS()  {
+		return css;
+	}
+
+
 	public synchronized String getStatus() {
 		return Plugin.instance.l10n.getString("ShareWiki." + l10nStatus);
 	}
@@ -166,11 +234,11 @@ public class Freesite implements Comparable<Freesite> {
 	public synchronized String getRealStatus() {
 		return l10nStatus;
 	}
-	
+
 	public void setL10nStatus(String status) {
 		setL10nStatus(status, status);
 	}
-	
+
 	public synchronized void setL10nStatus(String status, String changeToOnRestart) {
 		this.l10nStatus = status;
 		this.l10nStatusChangeToOnRestart = changeToOnRestart;
@@ -178,121 +246,63 @@ public class Freesite implements Comparable<Freesite> {
 
 	synchronized void save(SmartMap map) {
 		String prefix = "collection-" + uniqueKey + "/";
-		
+
 		map.putstr(prefix + "name", name);
 		map.putstr(prefix + "description", description);
 		map.putstr(prefix + "text", text);
-		
+		map.putstr(prefix + "css", css);
+
 		map.putstr(prefix + "requestSSK", requestSSK);
 		map.putstr(prefix + "insertSSK", insertSSK);
 		map.putlong(prefix + "edition", edition);
-		
+
 		map.putstr(prefix + "l10nStatus", l10nStatusChangeToOnRestart);
 	}
-	
+
 	void load(SmartMap map, int uniqueKeyInMap) {
 		String prefix = "collection-" + uniqueKeyInMap + "/";
-		
+
 		name = map.getstr(prefix + "name", name);
 		description = map.getstr(prefix + "description", description);
 		text = map.getstr(prefix + "text", text);
-		
+		css = map.getstr(prefix + "css", css);
+
 		requestSSK = map.getstr(prefix + "requestSSK", requestSSK);
 		insertSSK = map.getstr(prefix + "insertSSK", insertSSK);
 		edition = map.getlong(prefix + "edition", edition);
-		
+
 		l10nStatus = map.getstr(prefix + "l10nStatus", l10nStatus);
 		l10nStatusChangeToOnRestart = l10nStatus;
 	}
-	
+
 	private static String textToHTML(String text) {
-		String[] lines = text.split("\n");
-		StringBuilder sb = new StringBuilder();
-		boolean paragraph = false;
-		boolean textlinkbox = false;
-		boolean imglinkbox = false;
-		
-		for (int i = 0; i < lines.length; i++) {
-			String line = lines[i].trim();
-			line = line.replaceAll("<", "&lt;");
-			line = line.replaceAll(">", "&gt;");
-			
-			if (line.equals("")) {
-				if (textlinkbox || imglinkbox) sb.append("</div>\n");
-				textlinkbox = false;
-				imglinkbox = false;
-				
-				if (paragraph) sb.append("</p>\n\n");
-				paragraph = false;
-				continue;
-			}
-			
-			if (line.startsWith("***")) {
-				if (textlinkbox || imglinkbox) sb.append("</div>\n");
-				textlinkbox = false;
-				imglinkbox = false;
-				
-				if (paragraph) sb.append("</p>\n\n");
-				paragraph = false;
-				
-				String header = line.substring(3).trim();
-				sb.append("<h2>" + header + "</h2>\n\n");
-				continue;
-			}
-			
-			if (!paragraph) sb.append("<p>\n");
-			paragraph = true;
-			
-			if (line.startsWith("CHK@") || line.startsWith("SSK@") ||
-					line.startsWith("USK@") || line.startsWith("KSK@") ) {
-				String name;
 
-				if (line.startsWith("KSK@") || line.indexOf("/") < 15) {
-					name = line;
-				} else {
-					name = line.substring(0, 10) + "...";
-					name = name + line.substring(line.indexOf("/"));
-				}
+		String html="";
 
-				String lcase = name.toLowerCase();
+		try {
+			StringWriter writer = new StringWriter();
 
-				if (lcase.endsWith(".jpg") || lcase.endsWith(".png") ||
-						lcase.endsWith(".gif") || lcase.endsWith(".jpeg") ||
-						lcase.endsWith(".bmp")) {
-					if (textlinkbox) sb.append("</div>\n");
-					if (!imglinkbox) sb.append("<div class=\"imglinkbox\">\n");
-					textlinkbox = false;
-					imglinkbox = true;
+			MarkupParser parser = new MarkupParser(new TextileLanguage());
+			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
+			builder.setEmitAsDocument(false);// no <html> and <body>
 
-					sb.append("<div class=\"imglink\">");
-					sb.append("<a href=\"/" + line + "\" title=\"" + name + "\">");
-					sb.append("<img src=\"/" + line + "\" />");
-					sb.append("</a></div>\n");
-				} else {
-					if (imglinkbox) sb.append("</div>\n");
-					if (!textlinkbox) sb.append("<div class=\"textlinkbox\">\n");
-					textlinkbox = true;
-					imglinkbox = false;
+			parser.setBuilder(builder);
+			parser.parse(text);
+			html=writer.toString();
 
-					sb.append("<div class=\"textlink\">");
-					sb.append("<a href=\"/" + line + "\">" + name + "</a>");
-					sb.append("</div>\n");
-				}
+			Plugin.instance.logger.putstr(html);
 
-				continue;
-			}
-			
-			if (textlinkbox || imglinkbox) sb.append("</div>\n");
-			textlinkbox = false;
-			imglinkbox = false;
-			
-			sb.append("<div class=\"normalline\">" + line + "</div>\n");
+		} catch (Exception e) {
+			StringWriter sw=new StringWriter();
+			PrintWriter pw=new PrintWriter(sw);
+			e.printStackTrace(pw);
+
+			html=sw.toString();
+
+			Plugin.instance.logger.putstr("textToHTML: "+e.getMessage());
 		}
-		
-		if (textlinkbox || imglinkbox) sb.append("</div>\n");
-		if (paragraph) sb.append("</p>");
-		
-		return sb.toString();
+
+		return html;
 	}
 
 	@Override
