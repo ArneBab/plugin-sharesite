@@ -29,7 +29,7 @@ public class HomeToadlet extends Toadlet {
 
 	public HomeToadlet() {
 		super(null);
-		
+
 		pr = Plugin.instance.pluginRespirator;
 		pageMaker = pr.getPageMaker();
 		l10n = Plugin.instance.l10n;
@@ -50,73 +50,79 @@ public class HomeToadlet extends Toadlet {
 			writeReply(ctx, 200, "application/octet-stream", "OK", bucket);
 			return;
 		}
-		
+
 		// If normal request
 		String[] attrs;
 		String[] vals;
-		
+
 		PageNode pageNode = pageMaker.getPageNode(
-			l10n.getString("ShareWiki.Menu.Name"), ctx);
+		                        l10n.getString("ShareWiki.Menu.Name"), ctx);
 		HTMLNode homeForm = pr.addFormChild(pageNode.content,
-			"/ShareWiki/", "homeForm");
-		
+		                                    "/ShareWiki/", "homeForm");
+
 		// Your freesites
 		InfoboxNode listBox = pageMaker.getInfobox(
-			l10n.getString("ShareWiki.Home.Header"));
+		                          l10n.getString("ShareWiki.Home.Header"));
 		homeForm.addChild(listBox.outer);
-		
+
 		if (Plugin.isPreRelease) {
 			listBox.content.addChild("p",
-				l10n.getString("ShareWiki.Home.PreRelease"));
+			                         l10n.getString("ShareWiki.Home.PreRelease"));
 		}
-		
+
 		// New freesite, and restore recently deleted
 		HTMLNode listNewP = listBox.content.addChild("p");
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "submit", "newBtn",
-			l10n.getString("ShareWiki.Home.NewBtn") };
+		                      l10n.getString("ShareWiki.Home.NewBtn")
+		                    };
 		listNewP.addChild("input", attrs, vals);
-		
+
 		int numDeleted = Plugin.instance.database.numDeleted();
 		if (numDeleted > 0) {
 			String undelstr =
-				l10n.getString("ShareWiki.Home.UndeleteBtn",
-				"num", Integer.toString(numDeleted));
+			    l10n.getString("ShareWiki.Home.UndeleteBtn",
+			                   "num", Integer.toString(numDeleted));
 			attrs = new String[] { "type", "name", "value" };
 			vals = new String[] { "submit", "undeleteBtn", undelstr };
 			listNewP.addChild("input", attrs, vals);
 		}
-		
+
 		// Freesite table
 		if ( Plugin.instance.database.numFreesites() == 0 ) {
 			// If no freesites yet
 			listBox.content.addChild("p",
-				l10n.getString("ShareWiki.Home.Empty"));
+			                         l10n.getString("ShareWiki.Home.Empty"));
 		} else {
 			// Handle all your freesites
 			attrs = new String[] { "type", "name", "value" };
 			vals = new String[] { "submit", "insertBtn",
-				l10n.getString("ShareWiki.Home.InsertBtn") };
+			                      l10n.getString("ShareWiki.Home.InsertBtn")
+			                    };
 			listBox.content.addChild("input", attrs, vals);
 
 			attrs = new String[] { "type", "name", "value" };
 			vals = new String[] { "submit", "deleteBtn",
-				l10n.getString("ShareWiki.Home.DeleteBtn") };
+			                      l10n.getString("ShareWiki.Home.DeleteBtn")
+			                    };
 			listBox.content.addChild("input", attrs, vals);
 
 			listBox.content.addChild("span", " " +
-				l10n.getString("ShareWiki.Home.SelectedLists"));
-			
+			                         l10n.getString("ShareWiki.Home.SelectedLists"));
+
 			HTMLNode listTable = listBox.content.addChild("table");
 			HTMLNode listHeaders = listTable.addChild("tr");
 			listHeaders.addChild("th", "");
 			listHeaders.addChild("th",
-				l10n.getString("ShareWiki.Home.NameHeader"));
+			                     l10n.getString("ShareWiki.Home.NameHeader"));
 			listHeaders.addChild("th",
-				l10n.getString("ShareWiki.Home.StatusHeader"));
+			                     l10n.getString("ShareWiki.Home.StatusHeader"));
 			listHeaders.addChild("th",
-				l10n.getString("ShareWiki.Home.KeyHeader"));
-			
+			                     l10n.getString("ShareWiki.Home.KeyHeader"));
+			listHeaders.addChild("th",
+			                     l10n.getString("ShareWiki.Home.PreviewHeader"));
+
+
 			for (Freesite c : Plugin.instance.database.getFreesites()) {
 				HTMLNode listRow = listTable.addChild("tr");
 				attrs = new String[] { "type", "name" };
@@ -124,62 +130,66 @@ public class HomeToadlet extends Toadlet {
 				listRow.addChild("td").addChild("input", attrs, vals);
 				listRow.addChild("td").addChild("a", "href", "/ShareWiki/Edit/" + c.getUniqueKey(), c.getName());
 				listRow.addChild("td", c.getStatus());
+
 				if (c.getEdition() >= 0) {
-					FreenetURI key = new FreenetURI(c.getRequestSSK() + "site-" + c.getEdition() + "/");
+					FreenetURI key = new FreenetURI(c.getRequestSSK() + c.getName()+ "-" + c.getEdition() + "/");
 					key = key.uskForSSK();
 					listRow.addChild("td").addChild("a", "href", "/" + key.toString(), key.toShortString());
 				} else {
 					listRow.addChild("td",
-						l10n.getString("ShareWiki.Home.NoKey"));
+					                 l10n.getString("ShareWiki.Home.NoKey"));
 				}
+
+				listRow.addChild("td").addChild("a", "href", "/ShareWiki/Preview/" + c.getUniqueKey()+ "/index.html", "#"+c.getUniqueKey() );
 			}
-			
+
 			l10n.addL10nSubstitution(listBox.content.addChild("p"),
-					"ShareWiki.Home.NoteAnnounce",
-					new String[] {"link"},
-					new HTMLNode[] {HTMLNode.link("/chat/")});
+			                         "ShareWiki.Home.NoteAnnounce",
+			                         new String[] {"link"},
+			                         new HTMLNode[] {HTMLNode.link("/chat/")});
 		}
-		
+
 		// Backup and restore box
 		InfoboxNode backupBox = pageMaker.getInfobox(
-			l10n.getString("ShareWiki.Home.BackupHeader"));
+		                            l10n.getString("ShareWiki.Home.BackupHeader"));
 		homeForm.addChild(backupBox.outer);
-		
+
 		Calendar calendar = Calendar.getInstance();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		String todayDate = dateFormat.format(calendar.getTime());
-		
+
 		HTMLNode backupP = backupBox.content.addChild("p");
 		backupP.addChild("a", "href",
-			"/ShareWiki/ShareWiki-" + todayDate + ".db",
-			l10n.getString("ShareWiki.Home.BackupBtn"));
-		
+		                 "/ShareWiki/ShareWiki-" + todayDate + ".db",
+		                 l10n.getString("ShareWiki.Home.BackupBtn"));
+
 		backupBox.content.addChild("p",
-			l10n.getString("ShareWiki.Home.NoteRestore"));
-		
+		                           l10n.getString("ShareWiki.Home.NoteRestore"));
+
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "file", "restoreFile", "" };
 		backupBox.content.addChild("input", attrs, vals);
 		attrs = new String[] { "type", "name", "value" };
 		vals = new String[] { "submit", "restoreBtn",
-			l10n.getString("ShareWiki.Home.RestoreBtn") };
+		                      l10n.getString("ShareWiki.Home.RestoreBtn")
+		                    };
 		backupBox.content.addChild("input", attrs, vals);
-		
+
 		HTMLNode versionP = homeForm.addChild("p",
-				"style", "text-align: right");
+		                                      "style", "text-align: right");
 		versionP.addChild("span", "style", "font-size: 0.7em;",
-				l10n.getString("ShareWiki.Home.Version",
-				"ver", Plugin.version));
+		                  l10n.getString("ShareWiki.Home.Version",
+		                                 "ver", Plugin.version));
 		versionP.addChild("br");
 		versionP.addChild("span", "style", "font-size: 0.7em;").addChild(
-				"a", "href", "/" + Plugin.freesite,
-				l10n.getString("ShareWiki.Home.CheckSite"));
-		
+		    "a", "href", "/" + Plugin.freesite,
+		    l10n.getString("ShareWiki.Home.CheckSite"));
+
 		// Done
 		String ret = pageNode.outer.generate();
 		writeHTMLReply(ctx, 200, "OK", ret);
 	}
-	
+
 	// Gets called by the freenet node
 	public void handleMethodPOST(URI uri, HTTPRequest req, ToadletContext ctx) throws ToadletContextClosedException, IOException {
 		// Generic buttons
@@ -189,14 +199,14 @@ public class HomeToadlet extends Toadlet {
 			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/");
 			return;
 		}
-		
+
 		if (req.isPartSet("undeleteBtn")) {
 			Plugin.instance.database.restoreDeleted();
 			Plugin.instance.database.save();
 			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/");
 			return;
 		}
-		
+
 		if (req.isPartSet("restoreBtn")) {
 			byte[] got = req.getPartAsBytesFailsafe("restoreFile", 1000000000); // 1GB
 			SmartMap map = MapToData.dataToMap(got);
@@ -205,21 +215,21 @@ public class HomeToadlet extends Toadlet {
 			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/");
 			return;
 		}
-		
+
 		// Was insert or delete button clicked
 		final int INSERT = 1;
 		final int DELETE = 2;
-		
+
 		int button = 0;
 		if (req.isPartSet("insertBtn")) button = INSERT;
 		if (req.isPartSet("deleteBtn")) button = DELETE;
-		
+
 		// In that case perform for selected
 		if (button != 0) {
 			for (String part : req.getParts()) {
 				if (!part.startsWith("list-")) continue;
 				if (!req.getPartAsStringFailsafe(part, 5).equals("on")) continue;
-				
+
 				int id = -1;
 				try {
 					id = Integer.parseInt(part.substring(5));
@@ -227,14 +237,14 @@ public class HomeToadlet extends Toadlet {
 				}
 				Freesite c = Plugin.instance.database.getFreesiteWithUniqueKey(id);
 				if (c == null) continue;  // TODO: pass id below better than collection
-				
+
 				if (button == INSERT) Plugin.instance.inserter.add(c);
 				if (button == DELETE) Plugin.instance.database.delete(c);
 			}
-			
+
 			if (button == DELETE) Plugin.instance.database.save();
 		}
-		
+
 		writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/");
 	}
 }
