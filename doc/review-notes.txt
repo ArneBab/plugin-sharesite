@@ -1,0 +1,26 @@
+Review-Notes
+
+I reviewed all files except for mylyn (Textile). The code looks safe and pretty readable.
+
+./src/plugins/ShareWiki/ActivelinkCreator.java                                                                                       
+./src/plugins/ShareWiki/common/FileStorage.java                                                                                      
+./src/plugins/ShareWiki/common/Logger.java                                                                                           
+./src/plugins/ShareWiki/common/MapToData.java                                                                                        
+./src/plugins/ShareWiki/common/SmartMap.java                                                                                         
+./src/plugins/ShareWiki/Database.java                                                                                                
+./src/plugins/ShareWiki/Freesite.java                                                                                                
+./src/plugins/ShareWiki/Inserter.java                                                                                                
+./src/plugins/ShareWiki/Plugin.java                                                                                                  
+./src/plugins/ShareWiki/webui/EditToadlet.java                                                                                       
+./src/plugins/ShareWiki/webui/HomeToadlet.java                                                                                       
+./src/plugins/ShareWiki/webui/PreviewToadlet.java                                                                                    
+./src/plugins/ShareWiki/webui/WebInterface.java 
+
+Sadly the Eclipse Public License of Textile is incompatible to the GPL, we cannot publish 
+Sharewiki with Textile. We will have to replace textile with a GPL compatible replacement.
+
+We might be able to use the older Textile-J which is the base for mylyn wikitext and licensed 
+under LGPL-3.0: https://www.openhub.net/p/textile-j
+
+http://grepcode.com/snapshot/repo1.maven.org/maven2/net.java.dev.textile-j/textile-j/2.2.864/
+
