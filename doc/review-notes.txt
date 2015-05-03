@@ -24,3 +24,18 @@ under LGPL-3.0: https://www.openhub.net/p/textile-j
 
 http://grepcode.com/snapshot/repo1.maven.org/maven2/net.java.dev.textile-j/textile-j/2.2.864/
 
+Got Textile-J from svn+https://svn.java.net/svn/textile-j~svn/
+
+Last good revision:
+
+    $ hg log -r 878
+    Änderung:        878:107ca235aff8
+    Nutzer:          dgreen@470f24ee-203b-0410-bc1f-fcb0ba8ab46b
+    Datum:           Fri Apr 24 21:09:18 2009 +0000
+    Zusammenfassung: Initial import.
+
+Found via 
+
+    $ hg bisect -g 0
+    $ hg bisect -c 'grep -qR "Eclipse Public License" */; if test 0 -eq $?; then false; else true; fi'
+
