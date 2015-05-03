@@ -9,9 +9,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 
-import plugins.ShareWiki.mylyn.wikitext.core.parser.MarkupParser;
-import plugins.ShareWiki.mylyn.wikitext.textile.core.TextileLanguage;
-import plugins.ShareWiki.mylyn.wikitext.core.parser.builder.HtmlDocumentBuilder;
+import net.java.textilej.parser.MarkupParser;
+import net.java.textilej.parser.markup.textile.TextileDialect;
+import net.java.textilej.parser.builder.HtmlDocumentBuilder;
 import plugins.ShareWiki.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
@@ -282,7 +282,8 @@ public class Freesite implements Comparable<Freesite> {
 		try {
 			StringWriter writer = new StringWriter();
 
-			MarkupParser parser = new MarkupParser(new TextileLanguage());
+			MarkupParser parser = new MarkupParser();
+            parser.setDialect(new TextileDialect());
 			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
 			builder.setEmitAsDocument(false);// no <html> and <body>
 

@@ -35,6 +35,8 @@
 			</classpath>
 			<include name="**/*.java"/>
 			<exclude name="**/*Test.java"/>
+            <exclude name="**/TextileJPlugin.java" />
+            <exclude name="**/MarkupValidator.java" />
 		</javac>
 	</target>
 	
@@ -50,6 +52,8 @@
 		   
 		   <!-- we don't need the Eclipse plugin  -->
 		   <exclude name="**/WikiTextPlugin.java" />
+           <exclude name="**/TextileJPlugin.java" />
+           <exclude name="**/MarkupValidator.java" />
 		   <exclude name="**/mylyn/wikitext/core/WikiText.java" />
 		   <exclude name="**/EclipseServiceLocator.java" />
 		   <exclude name="**/mylyn/wikitext/core/validation/MarkupValidator.java" />
