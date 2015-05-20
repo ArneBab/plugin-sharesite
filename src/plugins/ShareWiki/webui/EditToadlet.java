@@ -114,6 +114,27 @@ public class EditToadlet extends Toadlet {
 		vals = new String[] { "textInput", "20", "80", "font-size: medium;" };
 		textDiv.addChild("textarea", attrs, vals, text);
 
+		// Syntax
+        HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("ShareWiki.Edit.TextSyntax"));
+        HTMLNode syntaxTable = syntaxHelpNode.addChild("table");
+        
+        HTMLNode syntaxHelp = syntaxTable.addChild("tr");
+        HTMLNode syntaxHelpTextile = syntaxHelp.addChild("td", "h2. headline");
+        HTMLNode syntaxHelpHtml = syntaxHelp.addChild("td");
+        HTMLNode syntaxHelpHtmlContent = syntaxHelpHtml.addChild("h2", "headline");
+        
+        syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "\"linkname\":/USK@key/name/N/filepath");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("a", "href", "/USK@key/name/N/filepath", "linkname");
+        
+        syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "- list item");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("ul");
+        HTMLNode syntaxHelpHtmlContentInner = syntaxHelpHtml.addChild("li", "list item");
+        
+        
 		HTMLNode cssDiv = editBox.content.addChild("p");
 		HTMLNode cssSpan = cssDiv.addChild("span");
 		cssSpan.addChild("span", l10n.getString("ShareWiki.Edit.CSS"));
@@ -139,9 +160,6 @@ public class EditToadlet extends Toadlet {
 		                      l10n.getString("ShareWiki.Edit.PreviewBtn")
 		                    };
 		bottomBtnDiv.addChild("input", attrs, vals);
-
-		// Syntax
-		editBox.content.addChild("p",l10n.getString("ShareWiki.Edit.TextSyntax"));
 
 		// Insert Key
 		InfoboxNode advBox = pageMaker.getInfobox(l10n.getString("ShareWiki.Edit.Advanced"));
