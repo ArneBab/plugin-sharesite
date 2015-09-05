@@ -132,7 +132,7 @@
 			<zipfileset dir="."
 				prefix = "ShareWiki"
 				excludes=".* unpacked/**/*"
-				includes="src/**/* rez/**/* **/*.properties build.xml build.txt README" />
+				includes="src/**/* rez/**/* **/*.properties build.xml build.txt README NEWS" />
 		</zip>
 	</target>
 
