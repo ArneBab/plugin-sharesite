@@ -149,9 +149,14 @@ public class EditToadlet extends Toadlet {
         syntaxHelpHtmlContent = syntaxHelpHtml.addChild("code", "code");
         
 		syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "bc. code block\ncontinuing");
+        syntaxHelpTextile = syntaxHelp.addChild("td").addChild("pre", "bc. code block\ncontinuing");
         syntaxHelpHtml = syntaxHelp.addChild("td");
         syntaxHelpHtmlContent = syntaxHelpHtml.addChild("pre").addChild("code", "code block\ncontinuing");
+        
+		syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td").addChild("pre", "bq. quote\ncontinued");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("blockquote", "quote\ncontinued");
         
         
 		HTMLNode cssDiv = editBox.content.addChild("p");
