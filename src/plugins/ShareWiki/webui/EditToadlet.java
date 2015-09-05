@@ -128,6 +128,11 @@ public class EditToadlet extends Toadlet {
         syntaxHelpHtml = syntaxHelp.addChild("td");
         syntaxHelpHtmlContent = syntaxHelpHtml.addChild("a", "href", "/USK@key/name/N/filepath", "linkname");
         syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", " (to end of line!)");
+
+        syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "!/USK@key/path/N/activelink.png!");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("img", "src", "/USK@0iU87PXyodL2nm6kCpmYntsteViIbMwlJE~wlqIVvZ0,nenxGvjXDElX5RIZxMvwSnOtRzUKJYjoXEDgkhY6Ljw,AQACAAE/freenetproject-mirror/166/activelink.png");
         
         syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "- list item");
