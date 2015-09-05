@@ -138,6 +138,10 @@ public class EditToadlet extends Toadlet {
         syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
         syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents)");
         
+        syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
+        syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents)");
+        
         
 		HTMLNode cssDiv = editBox.content.addChild("p");
 		HTMLNode cssSpan = cssDiv.addChild("span");
