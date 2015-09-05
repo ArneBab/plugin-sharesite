@@ -124,7 +124,7 @@ public class EditToadlet extends Toadlet {
         HTMLNode syntaxHelpHtmlContent = syntaxHelpHtml.addChild("h2", "headline");
         
         syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "\"linkname\":/USK@key/name/N/filepath");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "[\"linkname\":/USK@key/name/N/filepath]");
         syntaxHelpHtml = syntaxHelp.addChild("td");
         syntaxHelpHtmlContent = syntaxHelpHtml.addChild("a", "href", "/USK@key/name/N/filepath", "linkname");
         
@@ -139,8 +139,19 @@ public class EditToadlet extends Toadlet {
         syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents)");
         
         syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
-        syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents)");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "_emphasized_");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", "emphasized");
+        
+		syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "@code@");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("code", "code");
+        
+		syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "bc. code block\ncontinuing");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("pre").addChild("code", "code block\ncontinuing");
         
         
 		HTMLNode cssDiv = editBox.content.addChild("p");
