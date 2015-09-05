@@ -139,6 +139,11 @@ public class EditToadlet extends Toadlet {
         syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents)");
         
         syntaxHelp = syntaxTable.addChild("tr");
+        syntaxHelpTextile = syntaxHelp.addChild("td", "*strong*");
+        syntaxHelpHtml = syntaxHelp.addChild("td");
+        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("strong", "strong");
+        
+        syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "_emphasized_");
         syntaxHelpHtml = syntaxHelp.addChild("td");
         syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", "emphasized");
