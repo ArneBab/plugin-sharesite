@@ -297,9 +297,9 @@ public class EditToadlet extends Toadlet {
 		if (req.isPartSet("previewBtn")) {
 			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/Preview/" + siteId + "/index.html");
 		}
-
-
-		writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/Edit/" + siteId);
+        else {
+            writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/Edit/" + siteId);
+        }
 	}
 
 	private String preprocess(String text) {
