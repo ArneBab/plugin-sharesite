@@ -21,8 +21,8 @@ import java.awt.GraphicsEnvironment;
  * the global variable. The most logical way to reach different things.
  */
 public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVersioned, FredPluginL10n, FredPluginBaseL10n, FredPluginThreadless {
-	public static final String version = "0.2.1";
-	public static final long realVersion = 1;
+	public static final String version = "0.2.2";
+	public static final long realVersion = 2;
 	public static final String freesite = "USK@9aOIc6GxaELlIj8550zM7uaOXgPhqk5ZQS0fzJzrJ78,bhzvffR2i36fTnHzHJFKGVwFLEeSYoRI4DiSBmqb-9E,AQACAAE/site/10/";
 	public static boolean isPreRelease = false;
 
