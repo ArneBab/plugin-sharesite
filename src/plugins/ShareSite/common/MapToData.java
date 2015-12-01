@@ -1,4 +1,4 @@
-package plugins.ShareWiki.common;
+package plugins.Sharesite.common;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -10,7 +10,7 @@ import java.util.Map.Entry;
  * or parses a byte-array into a SmartMap.
  * On error a valid but empty object is returned.
  * 
- * The byte-array is prefixed with "ShareWiki-db-ver1".
+ * The byte-array is prefixed with "Sharesite-db-ver1".
  */
 public class MapToData {
 	private static byte[] intToByteArray(int value) {
@@ -48,7 +48,7 @@ public class MapToData {
 			SmartMap map = new SmartMap();
 			
 			String header = new String(readBytes(in, 17), "UTF-8");
-			if (!header.equals("ShareWiki-db-ver1")) {
+			if (!header.equals("Sharesite-db-ver1")) {
 				throw new IOException();
 			}
 			
@@ -75,7 +75,7 @@ public class MapToData {
 		try {
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			
-			out.write("ShareWiki-db-ver1".getBytes("UTF-8"));
+			out.write("Sharesite-db-ver1".getBytes("UTF-8"));
 			out.write(intToByteArray(map.size()));
 			
 			for (Entry<String,String> entry : map.entrySet()) {

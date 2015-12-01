@@ -1,4 +1,4 @@
-package plugins.ShareWiki;
+package plugins.Sharesite;
 
 import java.awt.Graphics2D;
 import java.awt.FontMetrics;

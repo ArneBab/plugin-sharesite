@@ -1,4 +1,4 @@
-package plugins.ShareWiki;
+package plugins.Sharesite;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -15,7 +15,7 @@ import java.io.*;
 
 /**
  * Inserts new or the first editions of freesites.
- * The ShareWiki freesites is inserted as
+ * The Sharesite freesites is inserted as
  * normal freesites, and can be accessed as such.
  */
 public class Inserter extends Thread {
