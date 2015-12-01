@@ -1,3 +1,6 @@
+Sharesite 0.2.3:
+- template: Add ids for header and footer to simplify CSS design
+
 Sharesite 0.2.2:
 - Rename to Sharesite
 - Link to the Sharesite freesite instead of ShareLink
