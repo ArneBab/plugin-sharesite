@@ -1,11 +1,11 @@
-package plugins.ShareWiki.common;
+package plugins.Sharesite.common;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import plugins.ShareWiki.Plugin;
+import plugins.Sharesite.Plugin;
 
 /**
  * Handles loading and saving of a "SmartMap" to disk.

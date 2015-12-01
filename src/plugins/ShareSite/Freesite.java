@@ -1,4 +1,4 @@
-package plugins.ShareWiki;
+package plugins.Sharesite;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import plugins.ShareWiki.common.SmartMap;
+import plugins.Sharesite.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
 import java.io.*;
@@ -45,7 +45,7 @@ public class Freesite implements Comparable<Freesite> {
 	public Freesite(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 
-		name = "ShareWiki freesite";
+		name = "Sharesite freesite";
 		description = "Write a short description shown in search results here.";
 		text = "";
 
@@ -228,7 +228,7 @@ public class Freesite implements Comparable<Freesite> {
 
 
 	public synchronized String getStatus() {
-		return Plugin.instance.l10n.getString("ShareWiki." + l10nStatus);
+		return Plugin.instance.l10n.getString("Sharesite." + l10nStatus);
 	}
 
 	public synchronized String getRealStatus() {
