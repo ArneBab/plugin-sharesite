@@ -23,7 +23,7 @@ import java.awt.GraphicsEnvironment;
 public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVersioned, FredPluginL10n, FredPluginBaseL10n, FredPluginThreadless {
 	public static final String version = "0.2.2";
 	public static final long realVersion = 2;
-	public static final String freesite = "USK@9aOIc6GxaELlIj8550zM7uaOXgPhqk5ZQS0fzJzrJ78,bhzvffR2i36fTnHzHJFKGVwFLEeSYoRI4DiSBmqb-9E,AQACAAE/site/10/";
+	public static final String freesite = "USK@dCnkUL22fAmKbKg-Cftx9j2m4IwyWB0QbGoiq1RSLP8,4d1TDqwRr4tYlsubLrQK~c4h0~FtmE-OXCDmFiI8BB4,AQACAAE/Sharesite/-1/";
 	public static boolean isPreRelease = false;
 
 	private PluginL10n plugL10n;
