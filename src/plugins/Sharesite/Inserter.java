@@ -104,6 +104,9 @@ public class Inserter extends Thread {
                 {
                     FreenetURI activelinkURI = new FreenetURI(c.getActivelinkUri());
                     /* redirect to the activelinkUri */
+                    /* TODO: discuss whether it is problematic that
+                     * this might allow causing other sites to preload
+                     * by using an image which is in the other container */
                     ManifestElement activelinkManifest = new ManifestElement("activelink.png", activelinkURI, null);
                     bucketsByName.put("activelink.png", activelinkManifest);
                 }
