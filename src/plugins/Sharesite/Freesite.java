@@ -219,7 +219,7 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 	public synchronized void setCSS(String css)  {
-		this.css=css;
+		this.css = css;
 	}
 
 	public synchronized String getCSS()  {
