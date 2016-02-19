@@ -288,7 +288,7 @@ public class EditToadlet extends Toadlet {
 				}
 			}
 
-			if (css!= null && !css.equals(c.getCSS())) {
+			if (css != null && !css.equals(c.getCSS())) {
 				c.setCSS(css);
 				changed = true;
 			}
