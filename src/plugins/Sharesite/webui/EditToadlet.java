@@ -56,13 +56,13 @@ public class EditToadlet extends Toadlet {
 
 		PageNode pageNode = pageMaker.getPageNode(l10n.getString("Sharesite.Menu.Name"), ctx);
 		HTMLNode editForm = pr.addFormChild(pageNode.content,"/Sharesite/Edit/" + siteId, "editForm");
-		addNodes(editForm,c.getName(),c.getDescription(),c.getText(),c.getCSS(), c.getRequestSSK(),c.getInsertSSK());
+		addNodes(editForm,c.getName(),c.getDescription(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK());
 		String ret = pageNode.outer.generate();
 		writeHTMLReply(ctx, 200, "OK", ret);
 	}
 
 
-	private void addNodes( HTMLNode form, String name, String desc, String text, String css, String rkey, String ikey) {
+	private void addNodes( HTMLNode form, String name, String desc, String text, String css, String aUri, String rkey, String ikey) {
 		String[] attrs;
 		String[] vals;
 
@@ -198,10 +198,20 @@ public class EditToadlet extends Toadlet {
 		                    };
 		bottomBtnDiv.addChild("input", attrs, vals);
 
-		// Insert Key
+		// Advanced settings
 		InfoboxNode advBox = pageMaker.getInfobox(l10n.getString("Sharesite.Edit.Advanced"));
 		form.addChild(advBox.outer);
 
+		// Activelink Uri
+		HTMLNode activelink = advBox.content.addChild("p");
+		activelink.addChild("span",l10n.getString("Sharesite.Edit.ActivelinkUri"));
+		activelink.addChild("br");
+
+		attrs = new String[] { "type", "size", "name", "value" };
+		vals = new String[] { "text",  "100", "activelinkUriInput",  aUri };
+		activelink.addChild("input", attrs, vals);
+        
+		// Insert Key
 		HTMLNode backup = advBox.content.addChild("p");
 		backup.addChild("span",l10n.getString("Sharesite.Edit.InsertKey"));
 		backup.addChild("br");
@@ -243,12 +253,14 @@ public class EditToadlet extends Toadlet {
 			String desc = req.getPartAsStringFailsafe("descInput", 10000).trim(); // 10kB
 			String text = req.getPartAsStringFailsafe("textInput", 1000000000).trim(); // 1GB
 			String css = req.getPartAsStringFailsafe("cssInput", 1000000000).trim(); // 1GB
+			String activelinkUri = req.getPartAsStringFailsafe("activelinkUriInput", 1000).trim();
 			String ikey= req.getPartAsStringFailsafe("insertKeyInput", 1000).trim();
 			String rkey= req.getPartAsStringFailsafe("requestKeyInput", 1000).trim();
 
 			Plugin.instance.logger.putstr("POST values:");
 			Plugin.instance.logger.putstr("   name=\""+name+"\"");
 			Plugin.instance.logger.putstr("   desc=\""+desc+"\"");
+			Plugin.instance.logger.putstr("   activelinkUri=\""+activelinkUri+"\"");
 			//Plugin.instance.logger.putstr("   text=\""+text+"\"");
 			//Plugin.instance.logger.putstr("   css=\""+css+"\"");
 			Plugin.instance.logger.putstr("   ikey=\""+ikey+"\"");
@@ -290,6 +302,11 @@ public class EditToadlet extends Toadlet {
 
 			if (css != null && !css.equals(c.getCSS())) {
 				c.setCSS(css);
+				changed = true;
+			}
+
+			if (activelinkUri != null && !activelinkUri.equals(c.getActivelinkUri())) {
+				c.setActivelinkUri(activelinkUri);
 				changed = true;
 			}
 

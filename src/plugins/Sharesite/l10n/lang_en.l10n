@@ -31,6 +31,7 @@ Sharesite.Edit.Text=Full description, text and links:
 Sharesite.Edit.TextSyntax=Syntax help: The plugin takes "Textile" markup text and HTML.
 Sharesite.Edit.Advanced=Advanced. Leave these alone if you don't know what you are doing!
 Sharesite.Edit.CSS=Stylesheet: Leave it alone if you don't know CSS.
+Sharesite.Edit.ActivelinkUri=Uri to activelink.png (leave empty to create)
 Sharesite.Edit.InsertKey=Insert key (Secret)
 Sharesite.Edit.RequestKey=Request key (Public)
 Sharesite.Status.New=Newly created freesite

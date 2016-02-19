@@ -32,6 +32,7 @@ public class Freesite implements Comparable<Freesite> {
 	private String description;
 	private String text;
 	private String css;
+	private String activelinkUri;
 
 	private String requestSSK;
 	private String insertSSK;
@@ -48,6 +49,7 @@ public class Freesite implements Comparable<Freesite> {
 		name = "Sharesite freesite";
 		description = "Write a short description shown in search results here.";
 		text = "";
+		activelinkUri = "";
 
 		String csstemplate = "/templates/style.css";
 
@@ -227,6 +229,15 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 
+	public synchronized String getActivelinkUri() {
+		return activelinkUri;
+	}
+
+	public synchronized void setActivelinkUri(String activelinkUri) {
+		this.activelinkUri = activelinkUri;
+	}
+
+
 	public synchronized String getStatus() {
 		return Plugin.instance.l10n.getString("Sharesite." + l10nStatus);
 	}
@@ -251,6 +262,7 @@ public class Freesite implements Comparable<Freesite> {
 		map.putstr(prefix + "description", description);
 		map.putstr(prefix + "text", text);
 		map.putstr(prefix + "css", css);
+		map.putstr(prefix + "activelinkUri", activelinkUri);
 
 		map.putstr(prefix + "requestSSK", requestSSK);
 		map.putstr(prefix + "insertSSK", insertSSK);
@@ -266,6 +278,7 @@ public class Freesite implements Comparable<Freesite> {
 		description = map.getstr(prefix + "description", description);
 		text = map.getstr(prefix + "text", text);
 		css = map.getstr(prefix + "css", css);
+		activelinkUri = map.getstr(prefix + "activelinkUri", activelinkUri);
 
 		requestSSK = map.getstr(prefix + "requestSSK", requestSSK);
 		insertSSK = map.getstr(prefix + "insertSSK", insertSSK);
