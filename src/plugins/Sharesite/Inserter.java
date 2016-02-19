@@ -10,6 +10,7 @@ import java.io.ByteArrayOutputStream;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
 import freenet.node.RequestStarter;
+import freenet.support.api.ManifestElement;
 import freenet.support.io.ArrayBucket;
 import java.io.*;
 
@@ -81,24 +82,35 @@ public class Inserter extends Thread {
 
 
 		try {
+			// prepare the buckets to insert
+			HashMap<String,Object> bucketsByName = new HashMap<String,Object>();
+            
 			// Make buckets with the freesite
 			ArrayBucket html = new ArrayBucket(c.getHTML().getBytes("UTF-8"));
 			ArrayBucket css = new ArrayBucket(c.getCSS().getBytes("UTF-8"));
 			ArrayBucket text = new ArrayBucket(c.getText().getBytes("UTF-8"));
 			ArrayBucket keys= new ArrayBucket(c.getKeys().getBytes("UTF-8"));
 
-			BufferedImage img= ActivelinkCreator.create(c.getName());
-			ByteArrayOutputStream baos=new ByteArrayOutputStream(5000);
+            if (c.getActivelinkUri() == "")
+                {
+                    BufferedImage img = ActivelinkCreator.create(c.getName());
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
+                    ImageIO.write(img, "PNG", baos);
+                    ArrayBucket activelinkData = new ArrayBucket(baos.toByteArray());
+                    Plugin.instance.logger.putstr("444");
+                    bucketsByName.put("activelink.png", activelinkData);
+                }
+            else
+                {
+                    FreenetURI activelinkURI = new FreenetURI(c.getActivelinkUri());
+                    /* redirect to the activelinkUri */
+                    ManifestElement activelinkManifest = new ManifestElement("activelink.png", activelinkURI, null);
+                    bucketsByName.put("activelink.png", activelinkManifest);
+                }
 
-			ImageIO.write(img, "PNG", baos);
-			ArrayBucket activelink= new ArrayBucket(baos.toByteArray());
-			Plugin.instance.logger.putstr("444");
-
-			HashMap<String,Object> bucketsByName = new HashMap<String,Object>();
 			bucketsByName.put("index.html", html);
 			bucketsByName.put("style.css", css);
 			bucketsByName.put("source.txt", text);
-			bucketsByName.put("activelink.png", activelink);
 			bucketsByName.put("keys.txt", keys);
 
 			// Insert the new edition
@@ -107,7 +119,7 @@ public class Inserter extends Thread {
 			insertURI = insertURI.uskForSSK();
 
 			HighLevelSimpleClient simpleClient = Plugin.instance.pluginRespirator.getHLSimpleClient();
-			Plugin.instance.logger.putstr(insertURI+": Insert started");
+			Plugin.instance.logger.putstr(insertURI+": Insert starting");
 			FreenetURI resultURI = simpleClient.insertManifest(insertURI, bucketsByName, "index.html", RequestStarter.INTERACTIVE_PRIORITY_CLASS);
 			if (isTerminated()) return;
 
