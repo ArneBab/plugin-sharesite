@@ -1,5 +1,5 @@
 Sharesite 0.2.5:
-- fix: compare strings with .equals()
+- Fix insert without activelink
 
 Sharesite 0.2.4:
 - Can use an externally uploaded activelink
