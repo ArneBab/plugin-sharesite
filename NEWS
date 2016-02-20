@@ -1,3 +1,6 @@
+Sharesite 0.2.4:
+- Can use an externally uploaded activelink
+
 Sharesite 0.2.3:
 - template: Add ids for header and footer to simplify CSS design
 
