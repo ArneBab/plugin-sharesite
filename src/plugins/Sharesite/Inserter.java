@@ -89,9 +89,9 @@ public class Inserter extends Thread {
 			ArrayBucket html = new ArrayBucket(c.getHTML().getBytes("UTF-8"));
 			ArrayBucket css = new ArrayBucket(c.getCSS().getBytes("UTF-8"));
 			ArrayBucket text = new ArrayBucket(c.getText().getBytes("UTF-8"));
-			ArrayBucket keys= new ArrayBucket(c.getKeys().getBytes("UTF-8"));
+			ArrayBucket keys = new ArrayBucket(c.getKeys().getBytes("UTF-8"));
 
-            if (c.getActivelinkUri() == "")
+            if (c.getActivelinkUri().equals(""))
                 {
                     BufferedImage img = ActivelinkCreator.create(c.getName());
                     ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
