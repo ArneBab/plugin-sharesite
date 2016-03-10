@@ -119,9 +119,9 @@ public class EditToadlet extends Toadlet {
         HTMLNode syntaxTable = syntaxHelpNode.addChild("table");
         
         HTMLNode syntaxHelp = syntaxTable.addChild("tr");
-        HTMLNode syntaxHelpTextile = syntaxHelp.addChild("td", "h2. headline");
+        HTMLNode syntaxHelpTextile = syntaxHelp.addChild("td", "h2. headline (or h3, h4, ...)");
         HTMLNode syntaxHelpHtml = syntaxHelp.addChild("td");
-        HTMLNode syntaxHelpHtmlContent = syntaxHelpHtml.addChild("h2", "headline");
+        HTMLNode syntaxHelpHtmlContent = syntaxHelpHtml.addChild("h2", "headline (or h3, h4, ...)");
         
         syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "\"linkname\":/USK@key/name/N/filepath");
@@ -142,7 +142,7 @@ public class EditToadlet extends Toadlet {
         
         syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
-        syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents when only element in line)");
+        syntaxHelpHtml = syntaxHelp.addChild("td", "(as the only element in a line inserts a table of contents of the h2,h3,h4 entries)");
         
         syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "*strong*");
