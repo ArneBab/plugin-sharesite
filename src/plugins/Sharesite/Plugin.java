@@ -1,7 +1,7 @@
-package plugins.ShareWiki;
+package plugins.Sharesite;
 
-import plugins.ShareWiki.common.Logger;
-import plugins.ShareWiki.webui.WebInterface;
+import plugins.Sharesite.common.Logger;
+import plugins.Sharesite.webui.WebInterface;
 import freenet.l10n.BaseL10n;
 import freenet.l10n.PluginL10n;
 import freenet.l10n.BaseL10n.LANGUAGE;
@@ -21,9 +21,9 @@ import java.awt.GraphicsEnvironment;
  * the global variable. The most logical way to reach different things.
  */
 public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVersioned, FredPluginL10n, FredPluginBaseL10n, FredPluginThreadless {
-	public static final String version = "0.2.1";
-	public static final long realVersion = 1;
-	public static final String freesite = "USK@9aOIc6GxaELlIj8550zM7uaOXgPhqk5ZQS0fzJzrJ78,bhzvffR2i36fTnHzHJFKGVwFLEeSYoRI4DiSBmqb-9E,AQACAAE/site/10/";
+	public static final String version = "0.2.5";
+	public static final long realVersion = 2;
+	public static final String freesite = "USK@dCnkUL22fAmKbKg-Cftx9j2m4IwyWB0QbGoiq1RSLP8,4d1TDqwRr4tYlsubLrQK~c4h0~FtmE-OXCDmFiI8BB4,AQACAAE/Sharesite/-1/";
 	public static boolean isPreRelease = false;
 
 	private PluginL10n plugL10n;
@@ -45,8 +45,8 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 	public void runPlugin(PluginRespirator pr) {
 		pluginRespirator = pr;
 
-		logger = new Logger("ShareWiki.log");
-		logger.putstr("Loading of ShareWiki " + version + " begins!");
+		logger = new Logger("Sharesite.log");
+		logger.putstr("Loading of Sharesite " + version + " begins!");
 
 		logger.putstr("Setting GraphicsEnvironment to headless");
 		System.setProperty("java.awt.headless","true");
@@ -96,7 +96,7 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 
 	@Override
 	public String getL10nFilesBasePath() {
-		return "plugins/ShareWiki/l10n/";
+		return "plugins/Sharesite/l10n/";
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 
 	@Override
 	public String getL10nOverrideFilesMask() {
-		return "ShareWiki_lang_${lang}.override.l10n";
+		return "Sharesite_lang_${lang}.override.l10n";
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 
 
-<!-- ant build file for ShareWiki -->
-<project name="ShareWiki" default="dist" basedir=".">
+<!-- ant build file for Sharesite -->
+<project name="Sharesite" default="dist" basedir=".">
 	<property name="freenet-cvs-snapshot.location" location="../fred/dist/freenet.jar"/>
 	<property name="freenet-ext.location" location="../fred/lib/freenet/freenet-ext.jar"/>
 	<property name="wikitext-src.location" location="wikitext-standalone.zip"/>	
@@ -80,7 +80,7 @@
 	     <move file="${wikitext-path-x}" tofile="${unpacked}/wikitext-standalone" />
 
 
-	     <copy todir="${src}/plugins/ShareWiki/">
+	     <copy todir="${src}/plugins/Sharesite/">
 	       <fileset dir="${unpacked}/wikitext-standalone/src/org.eclipse.mylyn.wikitext.textile.core/src/org/eclipse">
 		 <include name="mylyn/**/*.java"/>
 		 <include name="mylyn/**/*.properties"/>	 
@@ -88,14 +88,14 @@
 	       
 	      
 	       <filterchain>
-		 <replacestring from="org.eclipse.mylyn" to="plugins.ShareWiki.mylyn" />
-		 <replacestring from="import plugins.ShareWiki.mylyn.wikitext.core.parser.HtmlParser;" 
-		                to="//import plugins.ShareWiki.mylyn.wikitext.core.parser.HtmlParser;" />
+		 <replacestring from="org.eclipse.mylyn" to="plugins.Sharesite.mylyn" />
+		 <replacestring from="import plugins.Sharesite.mylyn.wikitext.core.parser.HtmlParser;" 
+		                to="//import plugins.Sharesite.mylyn.wikitext.core.parser.HtmlParser;" />
 	       </filterchain>
 	     </copy>
 
 	     
-	     <copy todir="${src}/plugins/ShareWiki/">
+	     <copy todir="${src}/plugins/Sharesite/">
 	       <fileset dir="${unpacked}/wikitext-standalone/src/org.eclipse.mylyn.wikitext.core/src/org/eclipse/">
 		 <include name="mylyn/**/*.java"/>
 		 <include name="mylyn/**/*.properties"/>
@@ -103,7 +103,7 @@
 	       
 	      
 	       <filterchain>
-		 <replacestring from="org.eclipse.mylyn" to="plugins.ShareWiki.mylyn" />
+		 <replacestring from="org.eclipse.mylyn" to="plugins.Sharesite.mylyn" />
 	       </filterchain>
 	     </copy>
 	       
@@ -113,11 +113,11 @@
 	<!-- ================================================== -->
 	<target name="dist" depends="compile" description="generate the distribution" >
 		<buildnumber file="build.txt" />
-		<echo message="ShareWiki build ${build.number}" />
+		<echo message="Sharesite build ${build.number}" />
 		
-		<jar jarfile="${dist}/ShareWiki-b${build.number}.jar" duplicate="fail" filesetmanifest="skip">
+		<jar jarfile="${dist}/Sharesite-b${build.number}.jar" duplicate="fail" filesetmanifest="skip">
 			<manifest>
-				<attribute name="Plugin-Main-Class" value="plugins.ShareWiki.Plugin"/>
+				<attribute name="Plugin-Main-Class" value="plugins.Sharesite.Plugin"/>
 			</manifest>
 			
 			<fileset dir="src/" casesensitive="yes">
@@ -128,11 +128,11 @@
 			<fileset dir="${build}/"/>
 			<fileset dir="rez/" />
 		</jar>
-		<zip destfile="${dist}/ShareWiki-b${build.number}-src.zip" filesonly="true" compress="true">
+		<zip destfile="${dist}/Sharesite-b${build.number}-src.zip" filesonly="true" compress="true">
 			<zipfileset dir="."
-				prefix = "ShareWiki"
+				prefix = "Sharesite"
 				excludes=".* unpacked/**/*"
-				includes="src/**/* rez/**/* **/*.properties build.xml build.txt README" />
+				includes="src/**/* rez/**/* **/*.properties build.xml build.txt README NEWS" />
 		</zip>
 	</target>
 
@@ -143,6 +143,6 @@
 		<delete dir="${dist}"/>
 		
 		<delete dir="${unpacked}"/>	
-		<delete dir="${src}/plugins/ShareWiki/mylyn/" />
+		<delete dir="${src}/plugins/Sharesite/mylyn/" />
 	</target>
 </project>
