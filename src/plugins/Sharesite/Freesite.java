@@ -1,4 +1,4 @@
-package plugins.ShareWiki;
+package plugins.Sharesite;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import plugins.ShareWiki.common.SmartMap;
+import plugins.Sharesite.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
 import java.io.*;
@@ -32,6 +32,7 @@ public class Freesite implements Comparable<Freesite> {
 	private String description;
 	private String text;
 	private String css;
+	private String activelinkUri;
 
 	private String requestSSK;
 	private String insertSSK;
@@ -45,9 +46,10 @@ public class Freesite implements Comparable<Freesite> {
 	public Freesite(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 
-		name = "ShareWiki freesite";
+		name = "Sharesite freesite";
 		description = "Write a short description shown in search results here.";
 		text = "";
+		activelinkUri = "";
 
 		String csstemplate = "/templates/style.css";
 
@@ -219,7 +221,7 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 	public synchronized void setCSS(String css)  {
-		this.css=css;
+		this.css = css;
 	}
 
 	public synchronized String getCSS()  {
@@ -227,8 +229,17 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 
+	public synchronized String getActivelinkUri() {
+		return activelinkUri;
+	}
+
+	public synchronized void setActivelinkUri(String activelinkUri) {
+		this.activelinkUri = activelinkUri;
+	}
+
+
 	public synchronized String getStatus() {
-		return Plugin.instance.l10n.getString("ShareWiki." + l10nStatus);
+		return Plugin.instance.l10n.getString("Sharesite." + l10nStatus);
 	}
 
 	public synchronized String getRealStatus() {
@@ -251,6 +262,7 @@ public class Freesite implements Comparable<Freesite> {
 		map.putstr(prefix + "description", description);
 		map.putstr(prefix + "text", text);
 		map.putstr(prefix + "css", css);
+		map.putstr(prefix + "activelinkUri", activelinkUri);
 
 		map.putstr(prefix + "requestSSK", requestSSK);
 		map.putstr(prefix + "insertSSK", insertSSK);
@@ -266,6 +278,7 @@ public class Freesite implements Comparable<Freesite> {
 		description = map.getstr(prefix + "description", description);
 		text = map.getstr(prefix + "text", text);
 		css = map.getstr(prefix + "css", css);
+		activelinkUri = map.getstr(prefix + "activelinkUri", activelinkUri);
 
 		requestSSK = map.getstr(prefix + "requestSSK", requestSSK);
 		insertSSK = map.getstr(prefix + "insertSSK", insertSSK);
