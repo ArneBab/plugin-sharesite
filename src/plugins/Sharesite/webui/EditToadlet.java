@@ -142,7 +142,7 @@ public class EditToadlet extends Toadlet {
         
         syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
-        syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents)");
+        syntaxHelpHtml = syntaxHelp.addChild("td", "(inserts table of contents when only element in line)");
         
         syntaxHelp = syntaxTable.addChild("tr");
         syntaxHelpTextile = syntaxHelp.addChild("td", "*strong*");
