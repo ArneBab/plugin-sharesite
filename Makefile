@@ -1,12 +1,12 @@
-all: dist/freenet.jar
+all: dist/
 
 check-syntax: src
-	ant -Dtest.skip=true
+	ant
 
 check: src build.xml
 	ant
 
-dist/freenet.jar: src build.xml
-	ant -Dtest.skip=true
+dist/: src build.xml build.txt
+	ant dist
 
 
