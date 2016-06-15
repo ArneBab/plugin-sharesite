@@ -177,6 +177,7 @@ public class Freesite implements Comparable<Freesite> {
 	public synchronized String getHTML() throws Exception {
 		// Prepare content
 		//Plugin.instance.logger.putstr("textToHTML:\n=============");
+		String descriptionHTML = textToHTML(description);
 		String content = textToHTML(text);
 		//Plugin.instance.logger.putstr("==============");
 
@@ -208,6 +209,7 @@ public class Freesite implements Comparable<Freesite> {
 
 			line = line.replaceAll("\\$NAME\\$", Matcher.quoteReplacement(name));
 			line = line.replaceAll("\\$DESCRIPTION\\$", Matcher.quoteReplacement(description));
+			line = line.replaceAll("\\$DESCRIPTION_HTML\\$", Matcher.quoteReplacement(descriptionHTML));
 			line = line.replaceAll("\\$CONTENT\\$", Matcher.quoteReplacement(content));
 			line = line.replaceAll("\\$INSERT_URI\\$", Matcher.quoteReplacement(nextEdition));
 			line = line.replaceAll("\\$CHECK_UPDATES_URI\\$", Matcher.quoteReplacement(checkUpdates));
