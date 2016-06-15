@@ -115,61 +115,63 @@ public class EditToadlet extends Toadlet {
 		textDiv.addChild("textarea", attrs, vals, text);
 
 		// Syntax
-        HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
-        HTMLNode syntaxTable = syntaxHelpNode.addChild("table");
-        
-        HTMLNode syntaxHelp = syntaxTable.addChild("tr");
-        HTMLNode syntaxHelpTextile = syntaxHelp.addChild("td", "h2. headline (or h3, h4, ...)");
-        HTMLNode syntaxHelpHtml = syntaxHelp.addChild("td");
-        HTMLNode syntaxHelpHtmlContent = syntaxHelpHtml.addChild("h2", "headline (or h3, h4, ...)");
-        
-        syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "\"linkname\":/USK@key/name/N/filepath");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("a", "href", "/USK@key/name/N/filepath", "linkname");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", " (to end of line!)");
+		HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
+		HTMLNode syntaxTable = syntaxHelpNode.addChild("table");
+		
+		HTMLNode syntaxHelp = syntaxTable.addChild("tr");
+		HTMLNode syntaxHelpTextile = syntaxHelp.addChild("td", "h2. headline (or h3, h4, ..., followed by an empty line)");
+		HTMLNode syntaxHelpHtml = syntaxHelp.addChild("td");
+		HTMLNode syntaxHelpHtmlContent = syntaxHelpHtml.addChild("h2", "headline (or h3, h4, ...)");
+		
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
+		syntaxHelpHtml = syntaxHelp.addChild("td", "(as the only element in a line inserts table of contents for h2,h3,h4)");
+		
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "bc. code block");
+		syntaxHelpTextile.addChild("br");
+		syntaxHelpTextile.addChild("span", "continuing (end with empty line)");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("pre").addChild("code", "code block\ncontinuing");
+		
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td").addChild("pre", "bq. quote\ncontinued (end with empty line)");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("blockquote", "quote\ncontinued");
 
-        syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "!/USK@key/path/N/activelink.png!");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("img", "src", "/USK@0iU87PXyodL2nm6kCpmYntsteViIbMwlJE~wlqIVvZ0,nenxGvjXDElX5RIZxMvwSnOtRzUKJYjoXEDgkhY6Ljw,AQACAAE/freenetproject-mirror/166/activelink.png");
-        
-        syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "- list item");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("ul");
-        HTMLNode syntaxHelpHtmlContentInner = syntaxHelpHtml.addChild("li", "list item");
-        
-        syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "{toc}");
-        syntaxHelpHtml = syntaxHelp.addChild("td", "(as the only element in a line inserts table of contents for h2,h3,h4)");
-        
-        syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "*strong*");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("strong", "strong");
-        
-        syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "_emphasized_");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", "emphasized");
-        
+		// Inline Elements
 		syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "@code@");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("code", "code");
-        
+		syntaxHelpTextile = syntaxHelp.addChild("td", "\"linkname\":/USK@key/name/N/filepath");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("a", "href", "/USK@key/name/N/filepath", "linkname");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", " (to end of line!)");
+
 		syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td", "bc. code block");
-        syntaxHelpTextile.addChild("br");
-        syntaxHelpTextile.addChild("span", "continuing");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("pre").addChild("code", "code block\ncontinuing");
-        
+		syntaxHelpTextile = syntaxHelp.addChild("td", "!/USK@key/path/N/activelink.png!");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("img", "src", "/USK@0iU87PXyodL2nm6kCpmYntsteViIbMwlJE~wlqIVvZ0,nenxGvjXDElX5RIZxMvwSnOtRzUKJYjoXEDgkhY6Ljw,AQACAAE/freenetproject-mirror/166/activelink.png");
+		
 		syntaxHelp = syntaxTable.addChild("tr");
-        syntaxHelpTextile = syntaxHelp.addChild("td").addChild("pre", "bq. quote\ncontinued");
-        syntaxHelpHtml = syntaxHelp.addChild("td");
-        syntaxHelpHtmlContent = syntaxHelpHtml.addChild("blockquote", "quote\ncontinued");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "- list item");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("ul");
+		HTMLNode syntaxHelpHtmlContentInner = syntaxHelpHtml.addChild("li", "list item");
+		
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "*strong*");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("strong", "strong");
+		
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "_emphasized_");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("em", "emphasized");
+		
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "@code@");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("code", "code");
+        
         
         
 		HTMLNode cssDiv = editBox.content.addChild("p");
@@ -367,6 +369,7 @@ public class EditToadlet extends Toadlet {
 					line=m3.replaceFirst(desc.replaceAll("%20"," "));
 				}
 
+				// FIXME: This kills text following links.
 				// Add %20 to key paths. Otherwise Textile will end the link at the first whitespace
 				Pattern keypath = Pattern.compile("((?<=--8/)(.*))|((?<=CAAE/)(.*))");
 				Matcher m4=keypath.matcher(line);
