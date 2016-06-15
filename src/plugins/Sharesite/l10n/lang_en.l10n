@@ -26,6 +26,7 @@ Sharesite.Edit.SaveBtn=Save changes
 Sharesite.Edit.PreviewBtn=Save and Preview
 Sharesite.Edit.PreprocessBtn=Find keys and save
 Sharesite.Edit.Name=Name / Title:
+Sharesite.Edit.Path=Path:
 Sharesite.Edit.Description=Short description of your freesite:
 Sharesite.Edit.Text=Main content of your freesite:
 Sharesite.Edit.TextSyntax=Syntax help: The plugin takes "Textile" markup text and HTML. Left: syntax to enter. Right: result on website.

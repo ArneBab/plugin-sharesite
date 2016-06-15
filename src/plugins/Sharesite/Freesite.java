@@ -29,6 +29,7 @@ import java.io.*;
  */
 public class Freesite implements Comparable<Freesite> {
 	private String name;
+	private String path;
 	private String description;
 	private String text;
 	private String css;
@@ -47,6 +48,7 @@ public class Freesite implements Comparable<Freesite> {
 		this.uniqueKey = uniqueKey;
 
 		name = "Sharesite freesite";
+		path = "sharesite-freesite";
 		description = "Write a short description shown in search results here.";
 		text = "";
 		activelinkUri = "";
@@ -88,6 +90,14 @@ public class Freesite implements Comparable<Freesite> {
 
 	public synchronized void setName(String name) {
 		this.name = name;
+	}
+
+	public synchronized String getPath() {
+		return path;
+	}
+
+	public synchronized void setPath(String path) {
+		this.path = path;
 	}
 
 	public synchronized String getDescription() {
@@ -182,7 +192,7 @@ public class Freesite implements Comparable<Freesite> {
 		//Plugin.instance.logger.putstr("==============");
 
 		// Generate URIs we need
-		FreenetURI requestURI = new FreenetURI(requestSSK + name +"-" + (edition + 1) + "/");
+		FreenetURI requestURI = new FreenetURI(requestSSK + path +"-" + (edition + 1) + "/");
 		FreenetURI uskURI = requestURI.uskForSSK();
 		String nextEdition = uskURI.toString();
 
@@ -261,6 +271,7 @@ public class Freesite implements Comparable<Freesite> {
 		String prefix = "collection-" + uniqueKey + "/";
 
 		map.putstr(prefix + "name", name);
+		map.putstr(prefix + "path", path);
 		map.putstr(prefix + "description", description);
 		map.putstr(prefix + "text", text);
 		map.putstr(prefix + "css", css);
@@ -277,6 +288,11 @@ public class Freesite implements Comparable<Freesite> {
 		String prefix = "collection-" + uniqueKeyInMap + "/";
 
 		name = map.getstr(prefix + "name", name);
+		path = map.getstr(prefix + "path", null);
+		// to avoid breaking old sites, keep path set to the name.
+		if (path == null) {
+		    path = name;
+		}
 		description = map.getstr(prefix + "description", description);
 		text = map.getstr(prefix + "text", text);
 		css = map.getstr(prefix + "css", css);

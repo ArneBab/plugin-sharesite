@@ -56,13 +56,13 @@ public class EditToadlet extends Toadlet {
 
 		PageNode pageNode = pageMaker.getPageNode(l10n.getString("Sharesite.Menu.Name"), ctx);
 		HTMLNode editForm = pr.addFormChild(pageNode.content,"/Sharesite/Edit/" + siteId, "editForm");
-		addNodes(editForm,c.getName(),c.getDescription(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK());
+		addNodes(editForm,c.getName(),c.getPath(),c.getDescription(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK());
 		String ret = pageNode.outer.generate();
 		writeHTMLReply(ctx, 200, "OK", ret);
 	}
 
 
-	private void addNodes( HTMLNode form, String name, String desc, String text, String css, String aUri, String rkey, String ikey) {
+	private void addNodes( HTMLNode form, String name, String path, String desc, String text, String css, String aUri, String rkey, String ikey) {
 		String[] attrs;
 		String[] vals;
 
@@ -96,6 +96,14 @@ public class EditToadlet extends Toadlet {
 		attrs = new String[] { "type", "size", "name", "value" };
 		vals = new String[] { "text", "80", "nameInput", name };
 		nameDiv.addChild("input", attrs, vals);
+
+		HTMLNode pathDiv = editBox.content.addChild("p");
+		HTMLNode pathSpan = pathDiv.addChild("span");
+		pathSpan.addChild("span",l10n.getString("Sharesite.Edit.Path"));
+		pathSpan.addChild("br");
+		attrs = new String[] { "type", "size", "name", "value" };
+		vals = new String[] { "text", "80", "pathInput", path };
+		pathDiv.addChild("input", attrs, vals);
 
 		HTMLNode descDiv = editBox.content.addChild("p");
 		HTMLNode descSpan = descDiv.addChild("span");
@@ -252,6 +260,7 @@ public class EditToadlet extends Toadlet {
 		// Perform action
 		if (req.isPartSet("saveBtn") || req.isPartSet("previewBtn")||req.isPartSet("preprocessBtn")) {
 			String name = req.getPartAsStringFailsafe("nameInput", 1000).trim(); // 1kB
+			String path = req.getPartAsStringFailsafe("pathInput", 1000).trim(); // 1kB
 			String desc = req.getPartAsStringFailsafe("descInput", 10000).trim(); // 10kB
 			String text = req.getPartAsStringFailsafe("textInput", 1000000000).trim(); // 1GB
 			String css = req.getPartAsStringFailsafe("cssInput", 1000000000).trim(); // 1GB
@@ -261,6 +270,7 @@ public class EditToadlet extends Toadlet {
 
 			Plugin.instance.logger.putstr("POST values:");
 			Plugin.instance.logger.putstr("   name=\""+name+"\"");
+			Plugin.instance.logger.putstr("   path=\""+path+"\"");
 			Plugin.instance.logger.putstr("   desc=\""+desc+"\"");
 			Plugin.instance.logger.putstr("   activelinkUri=\""+activelinkUri+"\"");
 			//Plugin.instance.logger.putstr("   text=\""+text+"\"");
@@ -280,6 +290,11 @@ public class EditToadlet extends Toadlet {
 			// Update name, text, etc
 			if (name != null && name.length() > 0 && !name.equals(c.getName())) {
 				c.setName(name);
+				changed = true;
+			}
+			if (path != null && path.length() > 0 && !path.equals(c.getPath())) {
+				c.setPath(path);
+				Plugin.instance.logger.putstr("Path changed!");
 				changed = true;
 			}
 			if (desc != null && !desc.equals(c.getDescription())) {
