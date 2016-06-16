@@ -117,7 +117,7 @@ public class Inserter extends Thread {
 			bucketsByName.put("keys.txt", keys);
 
 			// Insert the new edition
-			String suffix = c.getName() + "-" + (c.getEdition() + 1);
+			String suffix = c.getPath() + "-" + (c.getEdition() + 1);
 			FreenetURI insertURI = new FreenetURI(c.getInsertSSK() + suffix);
 			insertURI = insertURI.uskForSSK();
 
