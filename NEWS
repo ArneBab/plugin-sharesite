@@ -1,3 +1,12 @@
+master:
+- parse description as textile
+- name content content
+- syntax help: show block elements first
+- link to style.css at the bottom
+- add explicit path option
+- footer: link to the latest version of Sharesite
+- thanks to banbananabans@CQUZ... from FMS for lots of feedback which led to many of these changes
+
 Sharesite 0.2.7:
 - improve syntax help, thanks to baffled and moonunit
 
