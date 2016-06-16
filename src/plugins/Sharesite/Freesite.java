@@ -93,7 +93,11 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 	public synchronized String getPath() {
-		return path;
+		if (path != null) {
+			return path;
+		} else {
+			return name;
+		}
 	}
 
 	public synchronized void setPath(String path) {
