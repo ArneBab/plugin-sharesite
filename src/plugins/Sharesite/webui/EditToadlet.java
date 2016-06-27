@@ -278,6 +278,9 @@ public class EditToadlet extends Toadlet {
 			Plugin.instance.logger.putstr("   ikey=\""+ikey+"\"");
 			Plugin.instance.logger.putstr("   rkey=\""+rkey+"\"");
 
+			Plugin.instance.logger.putstr("/ in paths breaks preview and insert. URL-encoding it as %2F");
+			path = path.replace("/", "%2F"); // url encoding
+
 			boolean changed = false;
 
 			// new keys
