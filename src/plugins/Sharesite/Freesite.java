@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,6 +31,7 @@ import java.io.*;
 public class Freesite implements Comparable<Freesite> {
 	private String name;
 	private String path;
+	private Integer insertHour;
 	private String description;
 	private String text;
 	private String css;
@@ -49,6 +51,8 @@ public class Freesite implements Comparable<Freesite> {
 
 		name = "Sharesite freesite";
 		path = "sharesite-freesite";
+		Random r = new Random();
+		insertHour = r.nextInt(24);
 		description = "Write a short description shown in search results here.";
 		text = "";
 		activelinkUri = "";
@@ -102,6 +106,18 @@ public class Freesite implements Comparable<Freesite> {
 
 	public synchronized void setPath(String path) {
 		this.path = path;
+	}
+
+	public synchronized Integer getInsertHour() {
+		if (insertHour != null) {
+			return insertHour;
+		} else {
+			return -1; // meaning unrestricted
+		}
+	}
+
+	public synchronized void setInsertHour(Integer insertHour) {
+		this.insertHour = insertHour;
 	}
 
 	public synchronized String getDescription() {
@@ -276,6 +292,7 @@ public class Freesite implements Comparable<Freesite> {
 
 		map.putstr(prefix + "name", name);
 		map.putstr(prefix + "path", path);
+		map.putint(prefix + "insertHour", insertHour);
 		map.putstr(prefix + "description", description);
 		map.putstr(prefix + "text", text);
 		map.putstr(prefix + "css", css);
@@ -297,6 +314,8 @@ public class Freesite implements Comparable<Freesite> {
 		if (path == null) {
 		    path = name;
 		}
+		// to avoid changing behavior of old sites, keep insertHour as -1
+		insertHour = map.getint(prefix + "insertHour", -1);
 		description = map.getstr(prefix + "description", description);
 		text = map.getstr(prefix + "text", text);
 		css = map.getstr(prefix + "css", css);

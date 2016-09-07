@@ -2,6 +2,9 @@ package plugins.Sharesite;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.Locale;
 import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
@@ -33,12 +36,22 @@ public class Inserter extends Thread {
 		Freesite nextToInsert;
 
 		while (true) {
+			Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+				.get(Calendar.HOUR_OF_DAY); // 0-23
 			// Quick do everything that requires locking
 			synchronized (this) {
 				nextToInsert = null;
 
 				if (!queuedInserts.isEmpty()) {
-					nextToInsert = queuedInserts.removeFirst();
+					for(Freesite c : queuedInserts) {
+						if (c.getInsertHour() == null
+							|| c.getInsertHour().equals(-1)
+							|| c.getInsertHour().equals(currentHour)) {
+							nextToInsert = c;
+							queuedInserts.remove(c);
+							break;
+						}
+					}
 				}
 			}
 
