@@ -1,4 +1,6 @@
 master:
+
+Sharesite 0.2.8:
 - add insertHour to restrict the upload time
 - parse description as textile
 - name content content
