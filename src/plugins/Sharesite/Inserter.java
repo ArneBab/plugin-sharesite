@@ -57,6 +57,9 @@ public class Inserter extends Thread {
 
 			// Now safely perform the blocking inserts
 			if (nextToInsert != null) {
+				// TODO: Wait for a random fraction of the remaining
+				// part of the current hour to prevent detection of
+				// people who click insert during the insertHour.
 				performInsert(nextToInsert);
 			}
 
