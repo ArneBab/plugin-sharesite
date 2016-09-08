@@ -117,7 +117,12 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 	public synchronized void setInsertHour(Integer insertHour) {
-		this.insertHour = insertHour;
+		if (insertHour.equals(-2)) {
+			Random r = new Random();
+			insertHour = r.nextInt(24);
+		} else {
+			this.insertHour = insertHour;
+		}
 	}
 
 	public synchronized String getDescription() {

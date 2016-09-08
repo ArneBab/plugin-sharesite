@@ -1,4 +1,5 @@
 master:
+- add insertHour to restrict the upload time
 - parse description as textile
 - name content content
 - syntax help: show block elements first
