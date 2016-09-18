@@ -9,6 +9,7 @@ check: src build.xml
 	ant
 
 dist/: src build.xml build.txt $(SOURCES)
+	ant clean
 	ant dist
 
 
