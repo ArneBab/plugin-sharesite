@@ -179,7 +179,7 @@ public class HomeToadlet extends Toadlet {
 		                                      "style", "text-align: right");
 		versionP.addChild("span", "style", "font-size: 0.7em;",
 		                  l10n.getString("Sharesite.Home.Version",
-		                                 "ver", Plugin.version));
+		                                 "ver", Plugin.instance.getVersion()));
 		versionP.addChild("br");
 		versionP.addChild("span", "style", "font-size: 0.7em;").addChild(
 		    "a", "href", "/" + Plugin.freesite,
