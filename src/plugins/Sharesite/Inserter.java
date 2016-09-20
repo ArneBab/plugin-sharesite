@@ -60,6 +60,17 @@ public class Inserter extends Thread {
 				// TODO: Wait for a random fraction of the remaining
 				// part of the current hour to prevent detection of
 				// people who click insert during the insertHour.
+				if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
+					Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+						.get(Calendar.MINUTE); // 0-59
+					Integer waitTime = (int)(Math.random() * (55 - currentMinute));
+					try {
+						if (waitTime > 0) {
+							Thread.sleep((waitTime * 60 * 1000));
+						}
+					} catch (InterruptedException e) {
+					}
+				}
 				performInsert(nextToInsert);
 			}
 
