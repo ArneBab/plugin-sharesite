@@ -1,5 +1,8 @@
 master:
 
+Sharesite 0.4.0:
+- add random wait time of at most the remaining seconds in the insertHour to mask clicking insert during the insertHour.
+
 Sharesite 0.2.8:
 - add insertHour to restrict the upload time
 - parse description as textile
