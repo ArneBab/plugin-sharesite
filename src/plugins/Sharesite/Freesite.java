@@ -54,10 +54,10 @@ public class Freesite implements Comparable<Freesite> {
 		Random r = new Random();
 		insertHour = r.nextInt(24);
 		description = "Write a short description shown in search results here.";
-		text = "";
 		activelinkUri = "";
 
 		String csstemplate = "/templates/style.css";
+		String texttemplate = "/templates/content.txt";
 
 		try {
 			InputStream is = Plugin.class.getClassLoader().getResourceAsStream(csstemplate);
@@ -76,7 +76,22 @@ public class Freesite implements Comparable<Freesite> {
 			this.css= "";
 		}
 
+		try {
+			InputStream is = Plugin.class.getClassLoader().getResourceAsStream(texttemplate);
+			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			StringBuilder sb = new StringBuilder();
 
+			while (true) {
+				String line = reader.readLine();
+				if (line == null) break;
+				sb.append(line + "\n");
+			}
+
+			reader.close();
+			this.text= sb.toString();
+		} catch (Exception e) {
+			this.text= "";
+		}
 
 		HighLevelSimpleClient simpleClient = Plugin.instance.pluginRespirator.getHLSimpleClient();
 		FreenetURI[] keys = simpleClient.generateKeyPair("");
