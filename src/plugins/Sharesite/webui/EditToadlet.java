@@ -106,6 +106,14 @@ public class EditToadlet extends Toadlet {
 		vals = new String[] { "text", "80", "pathInput", path };
 		pathDiv.addChild("input", attrs, vals);
 
+		HTMLNode insertHour = editBox.content.addChild("p");
+		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHour"));
+		insertHour.addChild("br");
+
+		attrs = new String[] { "type", "size", "name", "value" };
+		vals = new String[] { "text",  "2", "insertHourInput",  iHour };
+		insertHour.addChild("input", attrs, vals);
+
 		HTMLNode descDiv = editBox.content.addChild("p");
 		HTMLNode descSpan = descDiv.addChild("span");
 		descSpan.addChild("span",
@@ -239,17 +247,6 @@ public class EditToadlet extends Toadlet {
 		attrs = new String[] { "type", "size", "name", "value" };
 		vals = new String[] { "text",  "100", "requestKeyInput",  rkey };
 		backup.addChild("input", attrs, vals);
-
-		// Request Key
-		backup.addChild("br");
-		backup.addChild("span",l10n.getString("Sharesite.Edit.InsertHour"));
-		backup.addChild("br");
-
-		attrs = new String[] { "type", "size", "name", "value" };
-		vals = new String[] { "text",  "2", "insertHourInput",  iHour };
-		backup.addChild("input", attrs, vals);
-
-
 	}
 
 	// Gets called by the freenet node

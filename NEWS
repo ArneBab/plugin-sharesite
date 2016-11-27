@@ -1,4 +1,6 @@
 master:
+- show insertHour setting after the path (at the top)
+- provide default content as nicer example
 
 Sharesite 0.4.0:
 - add random wait time of at most the remaining seconds in the insertHour to mask clicking insert during the insertHour.
