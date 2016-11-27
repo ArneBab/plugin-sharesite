@@ -106,14 +106,6 @@ public class EditToadlet extends Toadlet {
 		vals = new String[] { "text", "80", "pathInput", path };
 		pathDiv.addChild("input", attrs, vals);
 
-		HTMLNode insertHour = editBox.content.addChild("p");
-		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHour"));
-		insertHour.addChild("br");
-
-		attrs = new String[] { "type", "size", "name", "value" };
-		vals = new String[] { "text",  "2", "insertHourInput",  iHour };
-		insertHour.addChild("input", attrs, vals);
-
 		HTMLNode descDiv = editBox.content.addChild("p");
 		HTMLNode descSpan = descDiv.addChild("span");
 		descSpan.addChild("span",
@@ -130,6 +122,15 @@ public class EditToadlet extends Toadlet {
 		attrs = new String[] { "name", "rows", "cols", "style" };
 		vals = new String[] { "textInput", "20", "80", "font-size: medium;" };
 		textDiv.addChild("textarea", attrs, vals, text);
+
+		HTMLNode insertHour = editBox.content.addChild("p");
+		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHour"));
+		insertHour.addChild("br");
+
+		attrs = new String[] { "type", "size", "name", "value" };
+		vals = new String[] { "text",  "2", "insertHourInput",  iHour };
+		insertHour.addChild("input", attrs, vals);
+		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHourDescription"));
 
 		// Syntax
 		HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
