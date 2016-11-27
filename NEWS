@@ -1,5 +1,7 @@
 master:
-- show insertHour setting after the path (at the top)
+
+Sharesite 0.4.1:
+- show insertHour setting after the content (more visible to users)
 - provide default content as nicer example
 
 Sharesite 0.4.0:
