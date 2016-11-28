@@ -86,7 +86,7 @@ public class Freesite implements Comparable<Freesite> {
 				if (line == null) break;
 				sb.append(line + "\n");
 			}
-
+			
 			reader.close();
 			this.text= sb.toString();
 		} catch (Exception e) {
@@ -185,7 +185,7 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 	/*
-	 *  Try to find all Freenet keys in the freesite source
+	 * Try to find all Freenet keys in the freesite source
 	 */
 	public synchronized String getKeys() {
 		BufferedReader br=new BufferedReader(new StringReader(text));
@@ -272,11 +272,11 @@ public class Freesite implements Comparable<Freesite> {
 		return sb.toString();
 	}
 
-	public synchronized void setCSS(String css)  {
+	public synchronized void setCSS(String css) {
 		this.css = css;
 	}
 
-	public synchronized String getCSS()  {
+	public synchronized String getCSS() {
 		return css;
 	}
 
@@ -332,7 +332,7 @@ public class Freesite implements Comparable<Freesite> {
 		path = map.getstr(prefix + "path", null);
 		// to avoid breaking old sites, keep path set to the name.
 		if (path == null) {
-		    path = name;
+			path = name;
 		}
 		// to avoid changing behavior of old sites, keep insertHour as -1
 		insertHour = map.getint(prefix + "insertHour", -1);
@@ -355,9 +355,8 @@ public class Freesite implements Comparable<Freesite> {
 
 		try {
 			StringWriter writer = new StringWriter();
-
 			MarkupParser parser = new MarkupParser();
-            parser.setDialect(new TextileDialect());
+			parser.setDialect(new TextileDialect());
 			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
 			builder.setEmitAsDocument(false);// no <html> and <body>
 
