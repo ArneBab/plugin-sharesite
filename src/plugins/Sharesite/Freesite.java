@@ -59,11 +59,11 @@ public class Freesite implements Comparable<Freesite> {
 		String csstemplate = "/templates/style.css";
 		String texttemplate = "/templates/content.txt";
 
-		try {
-			InputStream is = Plugin.class.getClassLoader().getResourceAsStream(csstemplate);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		try (
+			 InputStream is = Plugin.class.getClassLoader().getResourceAsStream(csstemplate);
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			 ) {
 			StringBuilder sb = new StringBuilder();
-
 			while (true) {
 				String line = reader.readLine();
 				if (line == null) break;
@@ -76,11 +76,11 @@ public class Freesite implements Comparable<Freesite> {
 			this.css= "";
 		}
 
-		try {
-			InputStream is = Plugin.class.getClassLoader().getResourceAsStream(texttemplate);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		try (
+			 InputStream is = Plugin.class.getClassLoader().getResourceAsStream(texttemplate);
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			 ) {
 			StringBuilder sb = new StringBuilder();
-
 			while (true) {
 				String line = reader.readLine();
 				if (line == null) break;
