@@ -2,6 +2,9 @@ package plugins.Sharesite.webui;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Calendar;
+import java.util.TimeZone;
+import java.util.Locale;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 import java.io.BufferedReader;
@@ -128,9 +131,14 @@ public class EditToadlet extends Toadlet {
 		insertHour.addChild("br");
 
 		attrs = new String[] { "type", "size", "name", "value" };
-		vals = new String[] { "text",  "2", "insertHourInput",  iHour };
+		vals = new String[] { "text",  "2", "insertHourInput",	iHour };
 		insertHour.addChild("input", attrs, vals);
-		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHourDescription"));
+		Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+				.get(Calendar.HOUR_OF_DAY); // 0-23
+		Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+				.get(Calendar.MINUTE); // 0-59
+		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHourDescription",
+												  "hour", Integer.toString(currentHour)));
 
 		// Syntax
 		HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
