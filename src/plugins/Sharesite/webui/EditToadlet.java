@@ -138,7 +138,7 @@ public class EditToadlet extends Toadlet {
 		Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
 				.get(Calendar.MINUTE); // 0-59
 		insertHour.addChild("span",l10n.getString("Sharesite.Edit.InsertHourDescription",
-												  "hour", Integer.toString(currentHour)));
+							  "utchour", Integer.toString(currentHour)));
 
 		// Syntax
 		HTMLNode syntaxHelpNode = editBox.content.addChild("p",l10n.getString("Sharesite.Edit.TextSyntax"));
