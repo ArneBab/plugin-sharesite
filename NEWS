@@ -1,5 +1,8 @@
 master:
 
+Sharesite 0.4.2:
+- show the current UTC hour next to the insertHour setting
+
 Sharesite 0.4.1:
 - show insertHour setting after the content (more visible to users)
 - provide default content as nicer example
