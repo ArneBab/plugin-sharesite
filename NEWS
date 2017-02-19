@@ -1,5 +1,8 @@
 master:
 
+Sharesite 0.4.3:
+- increase realVersion to 4 for release as official plugin
+
 Sharesite 0.4.2:
 - show the current UTC hour next to the insertHour setting
 
