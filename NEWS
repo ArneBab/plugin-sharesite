@@ -1,5 +1,8 @@
 master:
 
+Sharesite 0.4.4:
+- ant: provide dist/Sharesite.jar as needed by the release-plugin script
+
 Sharesite 0.4.3:
 - increase realVersion to 4 for release as official plugin
 
