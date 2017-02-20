@@ -128,6 +128,7 @@
 			<fileset dir="${build}/"/>
 			<fileset dir="rez/" />
 		</jar>
+		<copy file="${dist}/Sharesite-b${build.number}.jar" tofile="${dist}/Sharesite.jar" />
 		<zip destfile="${dist}/Sharesite-b${build.number}-src.zip" filesonly="true" compress="true">
 			<zipfileset dir="."
 				prefix = "Sharesite"
