@@ -1,5 +1,8 @@
 master:
 
+Sharesite 0.4.5:
+- fix regression: busy wait for queued websites
+
 Sharesite 0.4.4:
 - ant: provide dist/Sharesite.jar as needed by the release-plugin script
 

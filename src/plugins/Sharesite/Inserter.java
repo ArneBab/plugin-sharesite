@@ -34,35 +34,22 @@ public class Inserter extends Thread {
 	@Override
 	public void run() {
 		Freesite nextToInsert;
-
+		
 		while (true) {
 			Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
 				.get(Calendar.HOUR_OF_DAY); // 0-23
+			Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+				.get(Calendar.MINUTE); // 0-59
 			// Quick do everything that requires locking
-			synchronized (this) {
-				nextToInsert = null;
-
-				if (!queuedInserts.isEmpty()) {
-					for(Freesite c : queuedInserts) {
-						if (c.getInsertHour() == null
-							|| c.getInsertHour().equals(-1)
-							|| c.getInsertHour().equals(currentHour)) {
-							nextToInsert = c;
-							queuedInserts.remove(c);
-							break;
-						}
-					}
-				}
-			}
-
+			nextToInsert = getNextToInsert(currentHour, queuedInserts);
+			
 			// Now safely perform the blocking inserts
 			if (nextToInsert != null) {
 				// TODO: Wait for a random fraction of the remaining
 				// part of the current hour to prevent detection of
 				// people who click insert during the insertHour.
 				if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
-					Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
-						.get(Calendar.MINUTE); // 0-59
+					// wait until at most 5 minutes before end of the hour
 					Integer waitTime = (int)(Math.random() * (55 - currentMinute));
 					try {
 						if (waitTime > 0) {
@@ -77,14 +64,35 @@ public class Inserter extends Thread {
 			// If nothing to do, let the thread sleep until notify
 			try {
 				synchronized (this) {
-					if (!running) break;
-					if (!queuedInserts.isEmpty()) continue;
+					if (!running) {
+						break;
+					}
+					if (!queuedInserts.isEmpty()) {
+						// need to back to ensure we do not miss a slot
+						if (nextToInsert == null) {
+							// empty run, can sleep until next full hour
+							Thread.sleep((60 - currentMinute) * 60 * 1000);
+						}
+						continue; // now check the next site
+					}
 
 					wait();
 				}
 			} catch (InterruptedException e) {
 			}
 		}
+	}
+
+	private synchronized Freesite getNextToInsert(Integer currentHour, LinkedList<Freesite> queuedInserts) {
+		for(Freesite c : queuedInserts) {
+			if (c.getInsertHour() == null
+				|| c.getInsertHour().equals(-1)
+				|| c.getInsertHour().equals(currentHour)) {
+				queuedInserts.remove(c);
+				return c;
+			}
+		}
+		return null;
 	}
 
 	public synchronized void terminate() {
