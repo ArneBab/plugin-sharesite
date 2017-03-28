@@ -2,10 +2,10 @@ SOURCES:=$(shell find src/ -name *.java) $(shell find src/ -name *.l10n)
 
 all: dist/.dist-updated
 
-check-syntax: src
+check-syntax: $(SOURCES)
 	ant
 
-check: src build.xml
+check: build.xml $(SOURCES)
 	ant
 
 dist/.dist-updated: build.xml build.txt $(SOURCES)
