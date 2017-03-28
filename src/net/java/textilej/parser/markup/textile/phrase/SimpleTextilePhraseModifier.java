@@ -51,7 +51,7 @@ public class SimpleTextilePhraseModifier extends PatternBasedElement {
 		String quotedDelimiter = quoteLite(getDelimiter());
 
 		// special casing to avoid breaking freenet keys:
-		if (this.delimiter == "-") {
+		if ((this.delimiter != null) && (this.delimiter.equals("-"))) {
 			return
 				  "(?<!(?i:CHK|SSK|USK|KSK)@[\\S]{0,1000})" + quotedDelimiter + "(?!"+quotedDelimiter+")"+
 				  Textile.REGEX_ATTRIBUTES +
