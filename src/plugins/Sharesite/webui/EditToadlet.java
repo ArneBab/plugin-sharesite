@@ -59,14 +59,14 @@ public class EditToadlet extends Toadlet {
 
 		PageNode pageNode = pageMaker.getPageNode(l10n.getString("Sharesite.Menu.Name"), ctx);
 		HTMLNode editForm = pr.addFormChild(pageNode.content,"/Sharesite/Edit/" + siteId, "editForm");
-		String iHour = Integer.toString(c.getInsertHour());
-		addNodes(editForm,c.getName(),c.getPath(),c.getDescription(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK(),iHour);
+		String hour = Integer.toString(c.getInsertHour());
+		addNodes(editForm,c.getName(),c.getPath(),c.getDescription(),c.getText(),c.getCSS(), c.getActivelinkUri(),c.getRequestSSK(),c.getInsertSSK(),hour);
 		String ret = pageNode.outer.generate();
 		writeHTMLReply(ctx, 200, "OK", ret);
 	}
 
 
-	private void addNodes( HTMLNode form, String name, String path, String desc, String text, String css, String aUri, String rkey, String ikey, String iHour) {
+	private void addNodes( HTMLNode form, String name, String path, String desc, String text, String css, String aUri, String rkey, String ikey, String hour) {
 		String[] attrs;
 		String[] vals;
 
@@ -131,7 +131,7 @@ public class EditToadlet extends Toadlet {
 		insertHour.addChild("br");
 
 		attrs = new String[] { "type", "size", "name", "value" };
-		vals = new String[] { "text",  "2", "insertHourInput",	iHour };
+		vals = new String[] { "text",  "2", "insertHourInput",	hour };
 		insertHour.addChild("input", attrs, vals);
 		Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
 				.get(Calendar.HOUR_OF_DAY); // 0-23
@@ -281,7 +281,7 @@ public class EditToadlet extends Toadlet {
 			String activelinkUri = req.getPartAsStringFailsafe("activelinkUriInput", 1000).trim();
 			String ikey= req.getPartAsStringFailsafe("insertKeyInput", 1000).trim();
 			String rkey= req.getPartAsStringFailsafe("requestKeyInput", 1000).trim();
-			String iHour= req.getPartAsStringFailsafe("insertHourInput", 1000).trim();
+			String hour= req.getPartAsStringFailsafe("insertHourInput", 1000).trim();
 
 			Plugin.instance.logger.putstr("POST values:");
 			Plugin.instance.logger.putstr("   name=\""+name+"\"");
@@ -292,7 +292,7 @@ public class EditToadlet extends Toadlet {
 			//Plugin.instance.logger.putstr("   css=\""+css+"\"");
 			Plugin.instance.logger.putstr("   ikey=\""+ikey+"\"");
 			Plugin.instance.logger.putstr("   rkey=\""+rkey+"\"");
-			Plugin.instance.logger.putstr("  iHour=\""+iHour+"\"");
+			Plugin.instance.logger.putstr("  hour=\""+hour+"\"");
 
 			Plugin.instance.logger.putstr("/ in paths breaks preview and insert. URL-encoding it as %2F");
 			path = path.replace("/", "%2F"); // url encoding
@@ -346,8 +346,8 @@ public class EditToadlet extends Toadlet {
 				changed = true;
 			}
 
-			if (iHour != null && iHour.length() > 0) {
-				Integer insertHour = Integer.valueOf(iHour);
+			if (hour != null && hour.length() > 0) {
+				Integer insertHour = Integer.valueOf(hour);
 				
 				if (!insertHour.equals(c.getInsertHour())) {
 					c.setInsertHour(insertHour);
