@@ -1,6 +1,6 @@
 SOURCES:=$(shell find src/ -name *.java) $(shell find src/ -name *.l10n)
 
-all: dist/
+all: dist/.dist-updated
 
 check-syntax: src
 	ant
@@ -8,8 +8,8 @@ check-syntax: src
 check: src build.xml
 	ant
 
-dist/: src build.xml build.txt $(SOURCES)
-	ant clean
-	ant dist
+dist/.dist-updated: build.xml build.txt $(SOURCES)
+	@mkdir -p dist/
+	ant clean && ant dist && touch $@
 
 
