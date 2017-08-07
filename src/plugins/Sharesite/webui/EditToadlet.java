@@ -196,6 +196,13 @@ public class EditToadlet extends Toadlet {
 		syntaxHelpHtml = syntaxHelp.addChild("td");
 		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("code", "code");
         
+		syntaxHelp = syntaxTable.addChild("tr");
+		syntaxHelpTextile = syntaxHelp.addChild("td", "<audio controls=\"controls\" preload=\"auto\" type=\"audio/mpeg\" style=\"height: 20px\" src=\"/CHK@.../....mp3\"></audio>");
+		syntaxHelpHtml = syntaxHelp.addChild("td");
+		attrs = new String[] { "controls", "preload", "type", "style", "src" };
+		vals = new String[] { "controls", "auto", "audio/mpeg", "height: 20px;",
+                              "/CHK@qtpnyOzrg~aiAbnw6AoKbX8ZlTCwznjY4G1y-JiiCgg,b0wkEgRPKWMvedueAKLkyv0S83xOrGUT4S7FaN5J3nI,AAMC--8/Infinite-Hands-free-software.mp3" };
+		syntaxHelpHtmlContent = syntaxHelpHtml.addChild("audio", attrs, vals, "linkname");
         
         
 		HTMLNode cssDiv = editBox.content.addChild("p");
