@@ -1,4 +1,5 @@
 master:
+- avoid blocking the node
 
 Sharesite 0.4.5:
 - fix regression: busy wait for queued websites
