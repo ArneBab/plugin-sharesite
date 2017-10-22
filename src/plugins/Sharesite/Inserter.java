@@ -56,7 +56,8 @@ public class Inserter extends Thread {
 							Thread.sleep((waitTime * 60 * 1000));
 						}
 					} catch (InterruptedException e) {
-						return; // break the loop when interrupted, we are only waiting
+						// break the loop when interrupted, we are only waiting
+						break;
 					}
 				}
 				performInsert(nextToInsert);
@@ -80,7 +81,8 @@ public class Inserter extends Thread {
 					wait();
 				}
 			} catch (InterruptedException e) {
-				return; // break the loop when interrupted, user is prompted next time to retry
+				// break the loop when interrupted, user is prompted next time to retry
+				break;
 			}
 		}
 	}
