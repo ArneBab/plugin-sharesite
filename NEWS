@@ -1,5 +1,8 @@
 master:
-- avoid blocking the node
+- 
+
+Sharesite 0.4.6:
+- avoid blocking the node: Inserter returns when interrupted while waiting
 
 Sharesite 0.4.5:
 - fix regression: busy wait for queued websites
