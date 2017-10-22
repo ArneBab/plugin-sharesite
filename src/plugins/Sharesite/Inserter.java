@@ -123,32 +123,32 @@ public class Inserter extends Thread {
 		try {
 			// prepare the buckets to insert
 			HashMap<String,Object> bucketsByName = new HashMap<String,Object>();
-            
+	    
 			// Make buckets with the freesite
 			ArrayBucket html = new ArrayBucket(c.getHTML().getBytes("UTF-8"));
 			ArrayBucket css = new ArrayBucket(c.getCSS().getBytes("UTF-8"));
 			ArrayBucket text = new ArrayBucket(c.getText().getBytes("UTF-8"));
 			ArrayBucket keys = new ArrayBucket(c.getKeys().getBytes("UTF-8"));
 
-            if (c.getActivelinkUri().equals(""))
-                {
-                    BufferedImage img = ActivelinkCreator.create(c.getName());
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
-                    ImageIO.write(img, "PNG", baos);
-                    ArrayBucket activelinkData = new ArrayBucket(baos.toByteArray());
-                    Plugin.instance.logger.putstr("444");
-                    bucketsByName.put("activelink.png", activelinkData);
-                }
-            else
-                {
-                    FreenetURI activelinkURI = new FreenetURI(c.getActivelinkUri());
-                    /* redirect to the activelinkUri */
-                    /* TODO: discuss whether it is problematic that
-                     * this might allow causing other sites to preload
-                     * by using an image which is in the other container */
-                    ManifestElement activelinkManifest = new ManifestElement("activelink.png", activelinkURI, null);
-                    bucketsByName.put("activelink.png", activelinkManifest);
-                }
+	    if (c.getActivelinkUri().equals(""))
+		{
+			BufferedImage img = ActivelinkCreator.create(c.getName());
+			ByteArrayOutputStream baos = new ByteArrayOutputStream(5000);
+			ImageIO.write(img, "PNG", baos);
+			ArrayBucket activelinkData = new ArrayBucket(baos.toByteArray());
+			Plugin.instance.logger.putstr("444");
+			bucketsByName.put("activelink.png", activelinkData);
+		}
+	    else
+		{
+			FreenetURI activelinkURI = new FreenetURI(c.getActivelinkUri());
+			/* redirect to the activelinkUri */
+			/* TODO: discuss whether it is problematic that
+			 * this might allow causing other sites to preload
+			 * by using an image which is in the other container */
+			ManifestElement activelinkManifest = new ManifestElement("activelink.png", activelinkURI, null);
+			bucketsByName.put("activelink.png", activelinkManifest);
+		}
 
 			bucketsByName.put("index.html", html);
 			bucketsByName.put("style.css", css);
