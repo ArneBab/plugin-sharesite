@@ -14,6 +14,7 @@ import freenet.pluginmanager.FredPluginVersioned;
 import freenet.pluginmanager.PluginRespirator;
 
 import java.awt.GraphicsEnvironment;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * This is the main class, the first one executed by Freenet.
@@ -53,7 +54,8 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 
 		logger.putstr("Preparing the inserter ...");
 		inserter = new Inserter();
-		inserter.start();
+		pluginRespirator.getNode().getTicker().queueTimedJob(inserter, "Sharesite waiter", MINUTES.toMillis(5), false, false);
+		//inserter.start();
 
 		logger.putstr("Loading the database ...");
 		database = new Database();
@@ -70,6 +72,7 @@ public class Plugin implements FredPlugin, FredPluginVersioned, FredPluginRealVe
 		logger.putstr("Terminating ...");
 		webInterface.removeInterface();
 		inserter.terminate();
+		pluginRespirator.getNode().getTicker().removeQueuedJob(inserter);
 		logger.close();
 	}
 
