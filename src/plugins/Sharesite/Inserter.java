@@ -15,6 +15,7 @@ import freenet.keys.FreenetURI;
 import freenet.node.RequestStarter;
 import freenet.support.api.ManifestElement;
 import freenet.support.io.ArrayBucket;
+import freenet.support.Ticker;
 import java.io.*;
 
 /**
@@ -35,55 +36,30 @@ public class Inserter extends Thread {
 	public void run() {
 		Freesite nextToInsert;
 		
-		while (true) {
-			Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
-				.get(Calendar.HOUR_OF_DAY); // 0-23
-			Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
-				.get(Calendar.MINUTE); // 0-59
-			// Quick do everything that requires locking
-			nextToInsert = getNextToInsert(currentHour, queuedInserts);
-			
-			// Now safely perform the blocking inserts
-			if (nextToInsert != null) {
-				// TODO: Wait for a random fraction of the remaining
-				// part of the current hour to prevent detection of
-				// people who click insert during the insertHour.
-				if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
-					// wait until at most 5 minutes before end of the hour
-					Integer waitTime = (int)(Math.random() * (55 - currentMinute));
-					try {
-						if (waitTime > 0) {
-							Thread.sleep((waitTime * 60 * 1000));
-						}
-					} catch (InterruptedException e) {
-						// break the loop when interrupted, we are only waiting
-						break;
-					}
-				}
-				performInsert(nextToInsert);
-			}
+		Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+			.get(Calendar.HOUR_OF_DAY); // 0-23
+		Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+			.get(Calendar.MINUTE); // 0-59
+		// Quick do everything that requires locking
+		nextToInsert = getNextToInsert(currentHour, queuedInserts);
 
-			// If nothing to do, let the thread sleep until notify
-			try {
-				synchronized (this) {
-					if (!running) {
-						break;
+		// Now safely perform the blocking inserts
+		if (nextToInsert != null) {
+			// TODO: Wait for a random fraction of the remaining
+			// part of the current hour to prevent detection of
+			// people who click insert during the insertHour.
+			if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
+				// wait until at most 5 minutes before end of the hour
+				Integer waitTime = (int)(Math.random() * (55 - currentMinute));
+				try {
+					if (waitTime > 0) {
+						Thread.sleep((waitTime * 60 * 1000));
 					}
-					if (!queuedInserts.isEmpty()) {
-						// need to back to ensure we do not miss a slot
-						if (nextToInsert == null) {
-							// empty run, can sleep until next full hour
-							Thread.sleep((60 - currentMinute) * 60 * 1000);
-						}
-						continue; // now check the next site
-					}
-
-					wait();
+				} catch (InterruptedException e) {
+					// break the loop when interrupted, we are only waiting					
 				}
-			} catch (InterruptedException e) {
-				// break the loop when interrupted, user is prompted next time to retry
-				break;
 			}
+			performInsert(nextToInsert);
 		}
 	}
 
