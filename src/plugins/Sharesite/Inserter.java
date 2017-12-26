@@ -13,9 +13,11 @@ import java.io.ByteArrayOutputStream;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
 import freenet.node.RequestStarter;
+import freenet.support.Ticker;
 import freenet.support.api.ManifestElement;
 import freenet.support.io.ArrayBucket;
 import java.io.*;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 /**
  * Inserts new or the first editions of freesites.
@@ -25,65 +27,41 @@ import java.io.*;
 public class Inserter extends Thread {
 	private boolean running;
 	private LinkedList<Freesite> queuedInserts;
+	private Ticker ticker;
 
-	public Inserter() {
+	public Inserter(Ticker t) {
 		running = true;
 		queuedInserts = new LinkedList<Freesite>();
+		ticker = t;
 	}
 
 	@Override
 	public void run() {
 		Freesite nextToInsert;
 		
-		while (true) {
-			Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
-				.get(Calendar.HOUR_OF_DAY); // 0-23
-			Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
-				.get(Calendar.MINUTE); // 0-59
-			// Quick do everything that requires locking
-			nextToInsert = getNextToInsert(currentHour, queuedInserts);
-			
-			// Now safely perform the blocking inserts
-			if (nextToInsert != null) {
-				// TODO: Wait for a random fraction of the remaining
-				// part of the current hour to prevent detection of
-				// people who click insert during the insertHour.
-				if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
-					// wait until at most 5 minutes before end of the hour
-					Integer waitTime = (int)(Math.random() * (55 - currentMinute));
-					try {
-						if (waitTime > 0) {
-							Thread.sleep((waitTime * 60 * 1000));
-						}
-					} catch (InterruptedException e) {
-						// break the loop when interrupted, we are only waiting
-						break;
-					}
-				}
-				performInsert(nextToInsert);
-			}
+		Integer currentHour = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+			.get(Calendar.HOUR_OF_DAY); // 0-23
+		Integer currentMinute = Calendar.getInstance(TimeZone.getTimeZone("UTC"), Locale.US)
+			.get(Calendar.MINUTE); // 0-59
+		// Quick do everything that requires locking
+		nextToInsert = getNextToInsert(currentHour, queuedInserts);
 
-			// If nothing to do, let the thread sleep until notify
-			try {
-				synchronized (this) {
-					if (!running) {
-						break;
+		// Now safely perform the blocking inserts
+		if (nextToInsert != null) {
+			// TODO: Wait for a random fraction of the remaining
+			// part of the current hour to prevent detection of
+			// people who click insert during the insertHour.
+			if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
+				// wait until at most 5 minutes before end of the hour
+				Integer waitTime = (int)(Math.random() * (55 - currentMinute));
+				try {
+					if (waitTime > 0) {
+						Thread.sleep((waitTime * 60 * 1000));
 					}
-					if (!queuedInserts.isEmpty()) {
-						// need to back to ensure we do not miss a slot
-						if (nextToInsert == null) {
-							// empty run, can sleep until next full hour
-							Thread.sleep((60 - currentMinute) * 60 * 1000);
-						}
-						continue; // now check the next site
-					}
-
-					wait();
+				} catch (InterruptedException e) {
 				}
-			} catch (InterruptedException e) {
-				// break the loop when interrupted, user is prompted next time to retry
-				break;
 			}
+			performInsert(nextToInsert);
 		}
 	}
 
@@ -93,8 +71,14 @@ public class Inserter extends Thread {
 				|| c.getInsertHour().equals(-1)
 				|| c.getInsertHour().equals(currentHour)) {
 				queuedInserts.remove(c);
+				if (!queuedInserts.isEmpty()) {
+					tick();
+				}
 				return c;
 			}
+		}
+		if (!queuedInserts.isEmpty()) {
+			tick();
 		}
 		return null;
 	}
@@ -105,6 +89,10 @@ public class Inserter extends Thread {
 		// TODO: how do we terminate a running insert? it is blocking.
 	}
 
+	private synchronized void tick() {
+		ticker.queueTimedJob(this, "Sharesite waiter", MINUTES.toMillis(5), false, false);
+	}
+	
 	private synchronized boolean isTerminated() {
 		return running == false;
 	}
@@ -112,7 +100,7 @@ public class Inserter extends Thread {
 	public synchronized void add(Freesite freesite) {
 		freesite.setL10nStatus("Status.Queue", freesite.getRealStatus());
 		queuedInserts.addLast(freesite);
-		notify();
+		tick();
 	}
 
 	private void performInsert(Freesite c) {
