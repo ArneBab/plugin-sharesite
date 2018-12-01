@@ -1,5 +1,9 @@
 master:
-- 
+-
+
+Sharesite 0.4.7:
+- avoid more blocking by using a ticker, thanks to TheSeeker!
+  (pull-request https://github.com/ArneBab/plugin-sharesite/pull/3)
 
 Sharesite 0.4.6:
 - avoid blocking the node: Inserter returns when interrupted while waiting
