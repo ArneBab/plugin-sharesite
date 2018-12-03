@@ -54,9 +54,11 @@ public class Inserter extends Thread {
 			if (!nextToInsert.getInsertHour().equals(-1)) { // no instant insert
 				// wait until at most 5 minutes before end of the hour
 				Integer waitTime = (int)(Math.random() * (55 - currentMinute));
-				if (waitTime > 0) {
-					tick(waitTime * 60 * 1000);
-					return;
+				try {
+					if (waitTime > 0) {
+						Thread.sleep((waitTime * 60 * 1000));
+					}
+				} catch (InterruptedException e) {
 				}
 			}
 			performInsert(nextToInsert);
