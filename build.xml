@@ -3,7 +3,7 @@
 
 <!-- ant build file for Sharesite -->
 <project name="Sharesite" default="dist" basedir=".">
-	<property name="freenet-cvs-snapshot.location" location="../fred/dist/freenet.jar"/>
+	<property name="freenet-cvs-snapshot.location" location="../fred/build/libs/freenet.jar"/>
 	<property name="freenet-ext.location" location="../fred/lib/freenet/freenet-ext.jar"/>
 	<property name="wikitext-src.location" location="wikitext-standalone.zip"/>	
 	
