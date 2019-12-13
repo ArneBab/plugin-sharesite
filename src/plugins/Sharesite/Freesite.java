@@ -1,10 +1,11 @@
-package plugins.ShareWiki;
+package plugins.Sharesite;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,7 +13,7 @@ import java.util.regex.Pattern;
 import net.java.textilej.parser.MarkupParser;
 import net.java.textilej.parser.markup.textile.TextileDialect;
 import net.java.textilej.parser.builder.HtmlDocumentBuilder;
-import plugins.ShareWiki.common.SmartMap;
+import plugins.Sharesite.common.SmartMap;
 import freenet.client.HighLevelSimpleClient;
 import freenet.keys.FreenetURI;
 import java.io.*;
@@ -29,9 +30,12 @@ import java.io.*;
  */
 public class Freesite implements Comparable<Freesite> {
 	private String name;
+	private String path;
+	private Integer insertHour;
 	private String description;
 	private String text;
 	private String css;
+	private String activelinkUri;
 
 	private String requestSSK;
 	private String insertSSK;
@@ -45,17 +49,21 @@ public class Freesite implements Comparable<Freesite> {
 	public Freesite(int uniqueKey) {
 		this.uniqueKey = uniqueKey;
 
-		name = "ShareWiki freesite";
+		name = "Sharesite freesite";
+		path = "sharesite-freesite";
+		Random r = new Random();
+		insertHour = r.nextInt(24);
 		description = "Write a short description shown in search results here.";
-		text = "";
+		activelinkUri = "";
 
 		String csstemplate = "/templates/style.css";
+		String texttemplate = "/templates/content.txt";
 
-		try {
-			InputStream is = Plugin.class.getClassLoader().getResourceAsStream(csstemplate);
-			BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+		try (
+			 InputStream is = Plugin.class.getClassLoader().getResourceAsStream(csstemplate);
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			 ) {
 			StringBuilder sb = new StringBuilder();
-
 			while (true) {
 				String line = reader.readLine();
 				if (line == null) break;
@@ -68,7 +76,22 @@ public class Freesite implements Comparable<Freesite> {
 			this.css= "";
 		}
 
-
+		try (
+			 InputStream is = Plugin.class.getClassLoader().getResourceAsStream(texttemplate);
+			 BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+			 ) {
+			StringBuilder sb = new StringBuilder();
+			while (true) {
+				String line = reader.readLine();
+				if (line == null) break;
+				sb.append(line + "\n");
+			}
+			
+			reader.close();
+			this.text= sb.toString();
+		} catch (Exception e) {
+			this.text= "";
+		}
 
 		HighLevelSimpleClient simpleClient = Plugin.instance.pluginRespirator.getHLSimpleClient();
 		FreenetURI[] keys = simpleClient.generateKeyPair("");
@@ -86,6 +109,35 @@ public class Freesite implements Comparable<Freesite> {
 
 	public synchronized void setName(String name) {
 		this.name = name;
+	}
+
+	public synchronized String getPath() {
+		if (path != null) {
+			return path;
+		} else {
+			return name;
+		}
+	}
+
+	public synchronized void setPath(String path) {
+		this.path = path;
+	}
+
+	public synchronized Integer getInsertHour() {
+		if (insertHour != null) {
+			return insertHour;
+		} else {
+			return -1; // meaning unrestricted
+		}
+	}
+
+	public synchronized void setInsertHour(Integer insertHour) {
+		if ((insertHour == null) || (insertHour.equals(-2))) {
+			Random r = new Random();
+			this.insertHour = r.nextInt(24);
+		} else {
+			this.insertHour = insertHour;
+		}
 	}
 
 	public synchronized String getDescription() {
@@ -133,7 +185,7 @@ public class Freesite implements Comparable<Freesite> {
 	}
 
 	/*
-	 *  Try to find all Freenet keys in the freesite source
+	 * Try to find all Freenet keys in the freesite source
 	 */
 	public synchronized String getKeys() {
 		BufferedReader br=new BufferedReader(new StringReader(text));
@@ -175,11 +227,12 @@ public class Freesite implements Comparable<Freesite> {
 	public synchronized String getHTML() throws Exception {
 		// Prepare content
 		//Plugin.instance.logger.putstr("textToHTML:\n=============");
+		String descriptionHTML = textToHTML(description);
 		String content = textToHTML(text);
 		//Plugin.instance.logger.putstr("==============");
 
 		// Generate URIs we need
-		FreenetURI requestURI = new FreenetURI(requestSSK + name +"-" + (edition + 1) + "/");
+		FreenetURI requestURI = new FreenetURI(requestSSK + path +"-" + (edition + 1) + "/");
 		FreenetURI uskURI = requestURI.uskForSSK();
 		String nextEdition = uskURI.toString();
 
@@ -206,6 +259,7 @@ public class Freesite implements Comparable<Freesite> {
 
 			line = line.replaceAll("\\$NAME\\$", Matcher.quoteReplacement(name));
 			line = line.replaceAll("\\$DESCRIPTION\\$", Matcher.quoteReplacement(description));
+			line = line.replaceAll("\\$DESCRIPTION_HTML\\$", Matcher.quoteReplacement(descriptionHTML));
 			line = line.replaceAll("\\$CONTENT\\$", Matcher.quoteReplacement(content));
 			line = line.replaceAll("\\$INSERT_URI\\$", Matcher.quoteReplacement(nextEdition));
 			line = line.replaceAll("\\$CHECK_UPDATES_URI\\$", Matcher.quoteReplacement(checkUpdates));
@@ -218,17 +272,26 @@ public class Freesite implements Comparable<Freesite> {
 		return sb.toString();
 	}
 
-	public synchronized void setCSS(String css)  {
-		this.css=css;
+	public synchronized void setCSS(String css) {
+		this.css = css;
 	}
 
-	public synchronized String getCSS()  {
+	public synchronized String getCSS() {
 		return css;
 	}
 
 
+	public synchronized String getActivelinkUri() {
+		return activelinkUri;
+	}
+
+	public synchronized void setActivelinkUri(String activelinkUri) {
+		this.activelinkUri = activelinkUri;
+	}
+
+
 	public synchronized String getStatus() {
-		return Plugin.instance.l10n.getString("ShareWiki." + l10nStatus);
+		return Plugin.instance.l10n.getString("Sharesite." + l10nStatus);
 	}
 
 	public synchronized String getRealStatus() {
@@ -248,9 +311,12 @@ public class Freesite implements Comparable<Freesite> {
 		String prefix = "collection-" + uniqueKey + "/";
 
 		map.putstr(prefix + "name", name);
+		map.putstr(prefix + "path", path);
+		map.putint(prefix + "insertHour", insertHour);
 		map.putstr(prefix + "description", description);
 		map.putstr(prefix + "text", text);
 		map.putstr(prefix + "css", css);
+		map.putstr(prefix + "activelinkUri", activelinkUri);
 
 		map.putstr(prefix + "requestSSK", requestSSK);
 		map.putstr(prefix + "insertSSK", insertSSK);
@@ -263,9 +329,17 @@ public class Freesite implements Comparable<Freesite> {
 		String prefix = "collection-" + uniqueKeyInMap + "/";
 
 		name = map.getstr(prefix + "name", name);
+		path = map.getstr(prefix + "path", null);
+		// to avoid breaking old sites, keep path set to the name.
+		if (path == null) {
+			path = name;
+		}
+		// to avoid changing behavior of old sites, keep insertHour as -1
+		insertHour = map.getint(prefix + "insertHour", -1);
 		description = map.getstr(prefix + "description", description);
 		text = map.getstr(prefix + "text", text);
 		css = map.getstr(prefix + "css", css);
+		activelinkUri = map.getstr(prefix + "activelinkUri", activelinkUri);
 
 		requestSSK = map.getstr(prefix + "requestSSK", requestSSK);
 		insertSSK = map.getstr(prefix + "insertSSK", insertSSK);
@@ -281,9 +355,8 @@ public class Freesite implements Comparable<Freesite> {
 
 		try {
 			StringWriter writer = new StringWriter();
-
 			MarkupParser parser = new MarkupParser();
-            parser.setDialect(new TextileDialect());
+			parser.setDialect(new TextileDialect());
 			HtmlDocumentBuilder builder = new HtmlDocumentBuilder(writer);
 			builder.setEmitAsDocument(false);// no <html> and <body>
 

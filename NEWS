@@ -1,21 +1,86 @@
-0.1.5:
+master:
+-
+
+Sharesite 0.4.7:
+- avoid more blocking by using a ticker, thanks to TheSeeker!
+  (pull-request https://github.com/ArneBab/plugin-sharesite/pull/3)
+
+Sharesite 0.4.6:
+- avoid blocking the node: Inserter returns when interrupted while waiting
+
+Sharesite 0.4.5:
+- fix regression: busy wait for queued websites
+
+Sharesite 0.4.4:
+- ant: provide dist/Sharesite.jar as needed by the release-plugin script
+
+Sharesite 0.4.3:
+- increase realVersion to 4 for release as official plugin
+
+Sharesite 0.4.2:
+- show the current UTC hour next to the insertHour setting
+
+Sharesite 0.4.1:
+- show insertHour setting after the content (more visible to users)
+- provide default content as nicer example
+
+Sharesite 0.4.0:
+- add random wait time of at most the remaining seconds in the insertHour to mask clicking insert during the insertHour.
+
+Sharesite 0.2.8:
+- add insertHour to restrict the upload time
+- parse description as textile
+- name content content
+- syntax help: show block elements first
+- link to style.css at the bottom
+- add explicit path option
+- footer: link to the latest version of Sharesite
+- thanks to banbananabans@CQUZ... from FMS for lots of feedback which led to many of these changes
+
+Sharesite 0.2.7:
+- improve syntax help, thanks to baffled and moonunit
+
+Sharesite 0.2.6:
+- Improve wording
+
+Sharesite 0.2.5:
+- Fix insert without activelink
+
+Sharesite 0.2.4:
+- Can use an externally uploaded activelink
+
+Sharesite 0.2.3:
+- template: Add ids for header and footer to simplify CSS design
+
+Sharesite 0.2.2:
+- Rename to Sharesite
+- Link to the Sharesite freesite instead of ShareLink
+
+ShareWiki 0.2.1:
+- Provide syntax help
+- Fix crash when hitting preview after save
+
+ShareWiki 0.2.0:
+- textile without mylin (replaced EPL licensed code)
+
+ShareWiki 0.1.5:
  - Fix regression that caused plugin not to work with old Java 6
  - Added simple build script
  - Do not fail HTML generation on invalid CHK/SSK/USK keys
 
-0.1.4:
+ShareWiki 0.1.4:
  - Small bugfix to make "recently deleted" work as expected again
  - Small bugfix to avoid collisions with plugin translations
  - Make the purpose of description and content clearer
  - Add version info and link to official freesite from within the plugin
  - The jar file now holds all source files too, just rename it to zip
 
-0.1.3:
+ShareWiki 0.1.3:
  - Use the word "freesite" rather than "collection"
  - Display some letters from the key for links
  - Remove non-usable functionality and simplify the code
 
-0.1.2:
+ShareWiki 0.1.2:
  - Simple backup and restore functionality
  - Link to instructions how to use Freetalk and FMS
 Merged from 0.2-pre1:
@@ -24,7 +89,7 @@ Merged from 0.2-pre1:
  - On plugin unload, make sure the threads really are killed
  - "USK@xxx/docname/edition" is invalid, should be "USK@xxx/docname/edition/"
 
-0.2-pre1:
+ShareLink 0.2-pre1:
  - You can now add your collections to an index with a few clicks
  - Index mode, easy to run and uses almost no system resources
  - Moved ShareLink to the Filesharing menu, saving space
@@ -33,20 +98,20 @@ Merged from 0.2-pre1:
  - On plugin unload, make sure the threads really are killed
  - "USK@xxx/docname/edition" is invalid, should be "USK@xxx/docname/edition/"
 
-0.1.1:
+ShareLink 0.1.1:
  - Fix a potential race condition when listing collections
  - Critical bugfix: Database corruption on non-ascii chars (reported by cactus)
  - Better protection against corrupted databases
 
-0.1:
+ShareLink 0.1:
  - Some improvements to the front-end.
  - Insert more data so we can restore collections from Freenet in the future
  - "Local changes not inserted" is now only set when something was changed
 
-0.1-pre3:
+ShareLink 0.1-pre3:
  - Use our own way to store data instead of Freenet's PluginStore
  - Fixed error that made $ and \ break HTML generation
  - You can now restore recently deleted collections
 
-0.1-pre2:
+ShareLink 0.1-pre2:
  - Images are now loaded and displayed as a gallery

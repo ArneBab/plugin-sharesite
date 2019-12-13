@@ -1,10 +1,10 @@
-package plugins.ShareWiki.webui;
+package plugins.Sharesite.webui;
 
 import java.io.IOException;
 import java.net.URI;
 
-import plugins.ShareWiki.Freesite;
-import plugins.ShareWiki.Plugin;
+import plugins.Sharesite.Freesite;
+import plugins.Sharesite.Plugin;
 
 import freenet.clients.http.Toadlet;
 import freenet.clients.http.ToadletContext;
@@ -18,7 +18,7 @@ public class PreviewToadlet extends Toadlet {
 
 	@Override
 	public String path() {
-		return "/ShareWiki/Preview/";
+		return "/Sharesite/Preview/";
 	}
 
 	// Gets called by the freenet node
@@ -37,7 +37,7 @@ public class PreviewToadlet extends Toadlet {
 		Freesite freesite = Plugin.instance.database.getFreesiteWithUniqueKey(siteId);
 		
 		if (freesite == null || filename == null) {
-			writeTemporaryRedirect(ctx, "Redirecting...", "/ShareWiki/");
+			writeTemporaryRedirect(ctx, "Redirecting...", "/Sharesite/");
 			return;
 		}
 		

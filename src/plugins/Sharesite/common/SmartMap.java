@@ -1,4 +1,4 @@
-package plugins.ShareWiki.common;
+package plugins.Sharesite.common;
 
 import java.util.ArrayList;
 import java.util.HashMap;
