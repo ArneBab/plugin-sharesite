@@ -132,7 +132,7 @@ public class HomeToadlet extends Toadlet {
 				listRow.addChild("td", c.getStatus());
 
 				if (c.getEdition() >= 0) {
-					FreenetURI key = new FreenetURI(c.getRequestSSK() + c.getName()+ "-" + c.getEdition() + "/");
+					FreenetURI key = new FreenetURI(c.getRequestSSK() + c.getPath()+ "-" + c.getEdition() + "/");
 					key = key.uskForSSK();
 					listRow.addChild("td").addChild("a", "href", "/" + key.toString(), key.toShortString());
 				} else {
@@ -179,7 +179,7 @@ public class HomeToadlet extends Toadlet {
 		                                      "style", "text-align: right");
 		versionP.addChild("span", "style", "font-size: 0.7em;",
 		                  l10n.getString("Sharesite.Home.Version",
-		                                 "ver", Plugin.version));
+		                                 "ver", Plugin.instance.getVersion()));
 		versionP.addChild("br");
 		versionP.addChild("span", "style", "font-size: 0.7em;").addChild(
 		    "a", "href", "/" + Plugin.freesite,
